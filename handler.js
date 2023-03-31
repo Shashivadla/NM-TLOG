@@ -42,7 +42,7 @@ async function merchantMapping(data) {
       shippingOrderId: get(data, "shippingOrderId", null),
     };
     console.log("main data", map);
-    await insertdb(map, "Merchant1");
+    await insertdb(map, "merchantOrder");
     console.log(data.values.taxes.length);
     for (let i = 0; i < data.values.taxes.length; i++) {
       let map_l1 = {
@@ -55,7 +55,7 @@ async function merchantMapping(data) {
         ),
       };
       console.log("first data", map_l1);
-      await insertdb(map_l1, "Merchant1");
+      await insertdb(map_l1, "merchantOrder");
     }
 
     for (let i = 0; i < data.promocodes.length; i++) {
@@ -68,7 +68,7 @@ async function merchantMapping(data) {
         promocodes_type: get(data, `promocodes[${i}].type`, null),
       };
       console.log("sec data", map_l2);
-      await insertdb(map_l2, "Merchant1");
+      await insertdb(map_l2, "merchantOrder");
     }
 
     for (let i = 0; i < data.promotionOffers.shippingOffers.length; i++) {
@@ -80,7 +80,7 @@ async function merchantMapping(data) {
           get(data, `promotionOffers.shippingOffers[${i}].discount`, null)
         ),
       };
-      await insertdb(map_l3, "Merchant1");
+      await insertdb(map_l3, "merchantOrder");
     }
 
     for (let i = 0; i < data.lines.length; i++) {
@@ -112,7 +112,7 @@ async function merchantMapping(data) {
           null
         ),
       };
-      await insertdb(map_l4, "Merchant1");
+      await insertdb(map_l4, "merchantOrder");
       let taxeslength = data.lines[i].values.taxes.length;
 
       for (let j = 0; j < taxeslength; j++) {
@@ -136,7 +136,7 @@ async function merchantMapping(data) {
             null
           ),
         };
-        await insertdb(map_l5, "Merchant1");
+        await insertdb(map_l5, "merchantOrder");
       }
     }
   } catch (error) {

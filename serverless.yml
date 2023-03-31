@@ -1,28 +1,49 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: architect
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
 
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
 frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs12.x
+  region: ${opt:region, 'us-east-2'}
+  stage: ${opt:stage, 'dev'}
+  # tags: ${self:custom.tags}
+  # stackTags: ${self:custom.tags}
+  iamRoleStatements: # default vpc lambda permissions
+  - Effect: "Allow"
+    Action: 
+      - "logs:CreateLogGroup"
+      - "logs:CreateLogStream"
+      - "logs:PutLogEvents"
+      - "ec2:CreateNetworkInterface"
+      - "ec2:DescribeNetworkInterfaces"
+      - "ec2:DeleteNetworkInterface"
+      - "ec2:AssignPrivateIpAddresses"
+      - "ec2:UnassignPrivateIpAddresses"
+      - ""
+    Resource: "*"
+  - Effect: "Allow"
+    Action:
+    - "dynamodb:DescribeTable"
+    - "dynamodb:Query"
+    - "dynamodb:GetItem"
+    Resource: 
+      - !GetAtt MerchantOrderTable.Arn
+      - !GetAtt SalesOrderTable.Arn
+      - !GetAtt ShippingOrderTable.Arn
+      - !GetAtt ActivityTable.Arn
+
+  # environment:
+  #   REGION: ${self:provider.region}
+  #   ACCOUNT: ${ssm:/${self:service}/${self:provider.stage}/aws.accountNumber} #${self:custom.accountNumber}
+  #   ENV: ${self:custom.stage}
+
+custom:
+  account: ${opt:account, 'bizdev'}
+  region: ${opt:region, 'us-east-2'}
+  stage: ${opt:stage, 'dev'}
+  serverless-iam-roles-per-function:
+    defaultInherit: true
 
 package:
   individually: true
@@ -30,6 +51,11 @@ package:
 #  stage: dev
 #  region: us-east-1
 
+    # QueueToTriggerLambdaDLQ: ${file(config/queues/sourceEvents/nm.yml):NmSourceDynamoStreamDLQ}
+    # BgSourceDynamoStreamQueue: ${file(config/queues/sourceEvents/bg.yml):BgSourceDynamoStreamQueue}
+    # BgSourceDynamoStreamDLQ: ${file(config/queues/sourceEvents/bg.yml):BgSourceDynamoStreamDLQ}
+    # HcSourceDynamoStreamQueue: ${file(config/queues/sourceEvents/hc.yml):HcSourceDynamoStreamQueue}
+    # HcSourceDynamoStreamDLQ: ${file(config/queues/sourceEvents/hc.yml):HcSourceDynamoStreamDLQ}
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
 #    role:
@@ -68,3 +94,8 @@ functions:
         - '!**/*'
         - 'handler.js'
         - 'node_modules/**'
+
+resources:
+  Resources:
+    QueueToTriggerLambda: ${file(config/queues/snsToDynamo.yml):QueueToTriggerLambda}
+    QueueToTriggerLambdaDLQ: ${file(config/queues/snsToDynamo.yml):QueueToTriggerLambdaDLQ}

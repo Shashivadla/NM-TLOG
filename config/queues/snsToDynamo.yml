@@ -1,0 +1,12 @@
+QueueToTriggerLambdaDLQ:
+  Type: "AWS::SQS::Queue"
+  Properties:
+    QueueName: my-test-queue-${self:provider.stage}
+
+QueueToTriggerLambda:
+  Type: "AWS::SQS::Queue"
+  Properties:
+    QueueName: my-test-queue-${self:provider.stage}
+    RedrivePolicy:
+      deadLetterTargetArn: !GetAtt QueueToTriggerLambdaDLQ.Arn
+      maxReceiveCount: 2

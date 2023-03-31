@@ -1,0 +1,17 @@
+MerchantOrderTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: merchantOrder-${self:provider.stage}
+    AttributeDefinitions:
+      - AttributeName: pKey
+        AttributeType: S
+      - AttributeName: sKey
+        AttributeType: S
+    KeySchema:
+      - AttributeName: pKey
+        KeyType: HASH
+      - AttributeName: sKey
+        KeyType: RANGE
+    ProvisionedThroughput:
+      ReadCapacityUnits: 1
+      WriteCapacityUnits: 1
