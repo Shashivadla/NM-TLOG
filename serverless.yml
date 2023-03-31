@@ -61,8 +61,8 @@ package:
 #    - include-me-dir/**
 
 functions:
-  Test:
-    handler: handler.Test
+  InsetDb:
+    handler: handler.InsetDb
     package:
       patterns:
         - '!**/*'
