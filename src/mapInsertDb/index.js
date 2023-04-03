@@ -17,7 +17,9 @@ module.exports.InsetDb = async (event) => {
       await salesMapping(data);
     } else if (secondKeyName == "code") {
       await shippingMapping(data);
-    } else {
+    } else if (secondKeyName == "tenantId") {
+      await returnMapping(data);
+    }else {
       console.log("no mapping done");
     }
   } catch (error) {
@@ -28,8 +30,8 @@ module.exports.InsetDb = async (event) => {
 async function merchantMapping(data) {
   try {
     let map = {
-      pkey: "MRCHT#" + get(data, "id", null),
-      skey: "MERCHANT",
+      pKey: "MRCHT#" + get(data, "id", null),
+      sKey: "MERCHANT",
       id: get(data, "id", null),
       stockPoint_code: Number(get(data, "stockPoint.code", null)),
       stockPoint_externalId: get(data, "stockPoint.externalId", null),
@@ -46,8 +48,8 @@ async function merchantMapping(data) {
     console.log(data.values.taxes.length);
     for (let i = 0; i < data.values.taxes.length; i++) {
       let map_l1 = {
-        pkey: "MRCHT#" + get(data, "id", null),
-        skey: `VALUES_TAXES${i + 1}`,
+        pKey: "MRCHT#" + get(data, "id", null),
+        sKey: `VALUES_TAXES${i + 1}`,
         // skey: `values_taxes_${i + 1}`,
         values_taxes_type: get(data, `values.taxes[${i}].type`, null),
         values_taxes_values: Number(
@@ -61,8 +63,8 @@ async function merchantMapping(data) {
     for (let i = 0; i < data.promocodes.length; i++) {
       let code = get(data, `promocodes[${i}].code`, null);
       let map_l2 = {
-        pkey: "MRCHT#" + get(data, "id", null),
-        skey: `PROMOCODES_${code}`,
+        pKey: "MRCHT#" + get(data, "id", null),
+        sKey: `PROMOCODES_${code}`,
         // skey: `promocodes_${code}`,
         promocodes_code: get(data, `promocodes[${i}].code`, null),
         promocodes_type: get(data, `promocodes[${i}].type`, null),
@@ -73,8 +75,8 @@ async function merchantMapping(data) {
 
     for (let i = 0; i < data.promotionOffers.shippingOffers.length; i++) {
       let map_l3 = {
-        pkey: "MRCHT#" + get(data, "id", null),
-        skey: `PROMOTIONOFFERS_SHIPPINGOFFERS_${i + 1}`,
+        pKey: "MRCHT#" + get(data, "id", null),
+        sKey: `PROMOTIONOFFERS_SHIPPINGOFFERS_${i + 1}`,
         // skey: `promotionOffers_shippingOffers_${i + 1}`,
         promotionOffers_shippingOffers_discount: Number(
           get(data, `promotionOffers.shippingOffers[${i}].discount`, null)
@@ -86,8 +88,8 @@ async function merchantMapping(data) {
     for (let i = 0; i < data.lines.length; i++) {
       let linesid = get(data, `lines[${i}].id`, null);
       let map_l4 = {
-        pkey: "MRCHT#" + get(data, "id", null),
-        skey: `LINES_${linesid}`,
+        pKey: "MRCHT#" + get(data, "id", null),
+        sKey: `LINES_${linesid}`,
         // skey: `lines_${linesid}`,
         lines_id: get(data, `lines[${i}].id`, null),
         lines_merchantBarcode: get(data, `lines[${i}].merchantBarcode`, null),
@@ -117,8 +119,8 @@ async function merchantMapping(data) {
 
       for (let j = 0; j < taxeslength; j++) {
         let map_l5 = {
-          pkey: "MRCHT#" + get(data, "id", null),
-          skey: `LINES_${linesid}_TAXES_${j + 1}`,
+          pKey: "MRCHT#" + get(data, "id", null),
+          sKey: `LINES_${linesid}_TAXES_${j + 1}`,
           // skey: `lines_${linesid}_taxes_${j + 1}`,
           lines_values_taxes_type: get(
             data,
@@ -889,6 +891,123 @@ async function salesMapping(data) {
     console.error(`Error: ${error.message}`);
   }
 }
+
+
+
+async function returnMapping(data){
+  try{
+  let map = {
+    pKey: `RETURN#${get(data, "id", null)}`,
+    sKey: `RETURN`,
+    id: get(data, "id", null),
+    tenantId: get(data, "tenantId", null),
+    customerId: get(data, "customerId", null),
+    customerEmail: get(data, "customerEmail", null),
+    returnMethodType: get(data, "returnMethodType", null),
+    returnStatus: get(data, "returnStatus", null),
+    numberOfBoxes: get(data, "numberOfBoxes", null),
+    transportInformation_transportId: get(data, "transportInformation.transportId", null),
+    transportInformation_trackingCode: get(data, "transportInformation.trackingCode", null),
+    transportInformation_pickupDate: get(data, "transportInformation.pickupDate", null),
+    transportInformation_courierId: get(data, "transportInformation.courierId", null),
+    originAddress_address1: get(data, "originAddress.address1", null),
+    originAddress_address2: get(data, "originAddress.address2", null),
+    originAddress_streetNumber: get(data, "originAddress.streetNumber", null),
+    originAddress_city: get(data, "originAddress.city", null),
+    originAddress_zipCode: get(data, "originAddress.zipCode", null),
+    originAddress_state_id: get(data, "originAddress.state.id", null),
+    originAddress_state_code: get(data, "originAddress.state.code", null),
+    originAddress_state_name: get(data, "originAddress.state.name", null),
+    originAddress_country_id: get(data, "originAddress.country.id", null),
+    originAddress_country_code: get(data, "originAddress.country.code", null),
+    originAddress_country_name: get(data, "originAddress.country.name", null),
+    originAddress_name: get(data, "originAddress.name", null),
+    originAddress_phone: get(data, "originAddress.phone", null),
+    originAddressTransliterated: get(data, "originAddressTransliterated", {}),
+    destinationAddress_id: get(data, "destinationAddress.id", null),
+    destinationAddress_name: get(data, "destinationAddress.name", null),
+    destinationAddress_contactId: get(data, "destinationAddress.contactId", null),
+    destinationAddress_street: get(data, "destinationAddress.street", null),
+    destinationAddress_streetNumber: get(data, "destinationAddress.streetNumber", null),
+    destinationAddress_state_id: get(data, "destinationAddress.state.id", null),
+    destinationAddress_state_code: get(data, "destinationAddress.state.code", null),
+    destinationAddress_state_name: get(data, "destinationAddress.state.name", null),
+    destinationAddress_city_id: get(data, "destinationAddress.city.id",null),
+    destinationAddress_city_name: get(data, "destinationAddress.city.name", null),
+    destinationAddress_country_id: get(data, "destinationAddress.country.id", null),
+    destinationAddress_country_code: get(data, "destinationAddress.country.code", null),
+    destinationAddress_country_name: get(data, "destinationAddress.country.name", null),
+    destinationAddress_continent_id: get(data, "destinationAddress.continent.id", null),
+    destinationAddress_continent_code: get(data, "destinationAddress.continent.code", null),
+    destinationAddress_continent_name: get(data, "destinationAddress.continent.name", null),
+    destinationAddress_zipCode: get(data, "destinationAddress_zipCode", null),
+    geoLocation_latitude: get(data, "geoLocation.latitude", null),
+    geoLocation_longitude: get(data, "geoLocation.longitude", null),
+    pickupSchedule_start: get(data, "pickupSchedule.start", null),
+    pickupSchedule_end: get(data, "pickupSchedule.end", null),
+    maxPickupDate: get(data, "maxPickupDate", null),
+    isIndirectReturn: get(data, "isIndirectReturn", null),
+    inStoreLocationId: get(data, "inStoreLocationId", null),
+    inStoreAddressId: get(data, "inStoreAddressId", null),
+    createdDate: get(data, "createdDate",null),
+    createdByStaffMemberId: get(data, "createdByStaffMemberId", null),
+    refundPreference_paymentType: get(data, "refundPreference.paymentType", null),
+    returnCancellation_id: get(data, "returnCancellation.id", null),
+    returnCancellation_status: get(data, "returnCancellation.status", null),
+    returnCancellation_reason: get(data, "returnCancellation.reason", null),
+    contested: get(data, "contested", true),
+    externalReturnId: get(data, "externalReturnId", null),
+  }
+  await insertdb(map, "return")
+
+  for(let i = 0; i<data.items.length; i++){
+  let mapl1 = {
+    pKey: `RETURN#${get(data, "id", null)}`,
+    sKey: `items_${get(data, `items[${i}].id`, null)}`,
+    items_id: get(data, `items[${i}].id`, null),
+    items_merchantOrderId: get(data, `items[${i}].merchantOrderId`, null),
+    items_merchantOrderItemId: get(data, `items[${i}].merchantOrderItemId`, null),
+    items_shippingOrderId: get(data, `items[${i}].shippingOrderId`, null),
+    items_lineUniqueIdentifier: get(data, `items[${i}].lineUniqueIdentifier`, null),
+    items_orderId: get(data, `items[${i}].orderId`, null),
+    items_itemStatus_description: get(data, `items[${i}].itemStatus.description`, null),
+    items_itemStatus_code: get(data, `items[${i}].itemStatus.code`, null),
+    items_returnReason_code: get(data, `items[${i}].returnReason.code`, null),
+    items_returnReason_description: get(data, `items[${i}].returnReason.description`, null),
+    items_observations: get(data, `items[${i}].observations`,null),
+    items_exchangeId: get(data, `items[${i}].exchangeId`, null)
+  }
+  for(let j = 0; j<data.items[i].actions.length; j++){
+    let mapl2 = {
+      pKey: `RETURN#${get(data, "id", null)}`,
+      sKey: `items_${get(data, `items[${i}].id`, null)}_actions_${j}`,
+      items_actions_type: get(data, `items[${i}].actions[${j}].type`, null),
+      items_actions_data: get(data, `items[${i}].actions[${j}].date`, null),
+      items_actions_origin_type: get(data, `items[${i}].actions[${j}].origin.type`, null),
+      items_actions_origin_userId: get(data, `items[${i}].actions[${j}].origin.userId`, null),
+      items_actions_origin_tenantId: get(data, `items[${i}].actions[${j}].origin.tenantId`, null),
+    }
+    await insertdb(mapl2, "return")
+  }
+  await insertdb(mapl1, "return")
+}
+
+for(let i = 0; i<data.overrides.length; i++){
+  let mapl3 = {
+    pKey: `RETURN#${get(data, "id", null)}`,
+    sKey: `overrides_${get(data, `overrides[${i}].overrideTypeId`, null)}`,
+    overrides_overrideTypeId: get(data, `overrides[${i}].overrideTypeId`, null),
+    overrides_observations: get(data, `overrides[${i}].observations`, null),
+  }
+  insertdb(mapl3, "return")
+}
+  }catch(error){
+    console.error(`Error: ${error.message}`);
+  }
+
+
+}
+
 
 async function insertdb(data, tableName) {
   let params;

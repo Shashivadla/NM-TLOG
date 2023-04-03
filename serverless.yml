@@ -49,6 +49,9 @@ provider:
       - !GetAtt SalesOrderTable.Arn
       - !GetAtt ShippingOrderTable.Arn
       - !GetAtt ActivityTable.Arn
+      - !GetAtt ReturnTable.Arn
+
+
 
   # environment:
   #   REGION: ${self:provider.region}
