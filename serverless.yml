@@ -1,4 +1,4 @@
-service: architect
+service: NM-Tlog
 
 frameworkVersion: '3'
 
@@ -20,13 +20,30 @@ provider:
       - "ec2:DeleteNetworkInterface"
       - "ec2:AssignPrivateIpAddresses"
       - "ec2:UnassignPrivateIpAddresses"
-      - ""
+      - 
     Resource: "*"
   - Effect: "Allow"
     Action:
-    - "dynamodb:DescribeTable"
-    - "dynamodb:Query"
-    - "dynamodb:GetItem"
+    - dynamodb:DescribeTable
+    - dynamodb:Query
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:PutItem
+    - dynamodb:UpdateItem
+    - dynamodb:DeleteItem
+    - dynamodb:BatchWriteItem
+    - dynamodb:BatchGetItem
+    - sqs:ReceiveMessage
+    - sqs:SendMessageBatch
+    - sqs:CreateQueue
+    - sqs:SetQueueAttributes
+    - sqs:GetQueueAttributes
+    - sqs:GetQueueUrl
+    - sqs:ListQueues
+    - sqs:ListDeadLetterSourceQueues
+    - sqs:PurgeQueue
+    - sqs:ChangeMessageVisibility
+    - sqs:DeleteMessage 
     Resource: 
       - !GetAtt MerchantOrderTable.Arn
       - !GetAtt SalesOrderTable.Arn

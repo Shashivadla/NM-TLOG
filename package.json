@@ -1,12 +1,14 @@
 {
   "dependencies": {
     "aws-sdk": "^2.1341.0",
-    "lodash.get": "^4.4.2"
+    "lodash.get": "^4.4.2",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
+    "uuid": "^9.0.0"
   },
   "name": "architect",
   "version": "1.0.0",
   "main": "ak.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

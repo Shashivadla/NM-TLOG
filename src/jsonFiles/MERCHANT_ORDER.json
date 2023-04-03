@@ -1,0 +1,102 @@
+{
+  "id": "test3",
+  "stockPoint": {
+    "code": 65325695,
+    "externalId": "7845256"
+  },
+  "orderId": "ABCLRF",
+  "tenantId": 15400,
+  "values": {
+    "currencyCode": "USD",
+    "quantity": 5,
+    "shippingAmount": 1,
+    "totalAmount": 25.6,
+    "taxes": [
+      {
+        "type": "DeliveryDutyPaid-1",
+        "values": 1.2
+      },
+      {
+        "type": "DeliveryDutyPaid-2",
+        "values": 1.2
+      }
+    ]
+  },
+  "shippingOrderId": "333z4857-e89b-12d3-a456-556642440000",
+  "promocodes": [
+    {
+      "code": "test1",
+      "type": "Order"
+    },
+    {
+      "code": "BD452-2",
+      "type": "Order"
+    }
+  ],
+  "promotionOffers": {
+    "shippingOffers": [
+      {
+        "discount": 1.51
+      },    {
+        "discount": 1.52
+      }, {
+        "discount": 1.52
+      }
+    ]
+  },
+  "lines": [
+    {
+      "id": 11,
+      "merchantBarcode": null,
+      "values": {
+        "currencyCode": "GBP",
+        "quantity": 12,
+        "total": null,
+        "taxes": [
+          {
+            "type": null,
+            "value": null,
+            "rate": null
+          },
+          {
+            "type": null,
+            "value": null,
+            "rate": null
+          },
+          {
+            "type": null,
+            "value": null,
+            "rate": null
+          }
+        ]
+      },
+      "shippingOrderLineId": null,
+      "productNumber": "18691161",
+      "productDescription": "Interaction hi-top sneakers"
+    },
+    {
+      "id": 12,
+      "merchantBarcode": null,
+      "values": {
+        "currencyCode": "GBP",
+        "quantity": 12,
+        "total": null,
+        "taxes": [
+          {
+            "type": null,
+            "value": null,
+            "rate": null
+          },
+          {
+            "type": null,
+            "value": null,
+            "rate": null
+          }
+        ]
+      },
+      "shippingOrderLineId": null,
+      "productNumber": "18691161",
+      "productDescription": "Interaction hi-top sneakers"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+function:
+handler: src/mapInsertDb/index.handler
+  events:
+    - http:
+        path: tlog/insert
+        method: POST
+        cors:
+          origin: https://hybcsn-${self:provider.stage}.nmgcloud.io
+          headers:
+            - Access-Control-Allow-Origin
+            - X-Request-Id
+            - Access-Control-Allow-Headers
+            - Authorization
+            - Content-Type
+            - X-Amz-Date
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+            - X-Customer-Id
+            - X-Api-Key
+          allowCredentials: true
+        authorizer:
+            arn: ${ssm:/consignment-asn-backend/${self:provider.stage}/cognitoUserPool.user_pool_arn}
+  layers:
+    - !Ref AsnLayerLambdaLayer
+  package:
+    individually: true
+    patterns:
+      - "!**/*"
+      - "src/asnRetrigger/*.js"
+      - "src/shared/**"

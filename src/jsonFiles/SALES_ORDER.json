@@ -1,0 +1,313 @@
+{
+  "id": "PCTQV3",
+  "customer": {
+    "id": 116376601,
+    "email": "john.smith@gmail.com"
+  },
+  "payment": {
+    "intents": [
+      {
+        "id": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+        "reference": "149505827",
+        "currency": "USD",
+        "dateCreated": "2020-11-05T02:50:12.208Z",
+        "status": "Settled",
+        "intruments": [
+          {
+            "method": "CreditCard",
+            "option": "Visa/Mastercard/Amex",
+            "amounts": [
+              {
+                "value": 288.5,
+                "settledValue": 288.5,
+                "refundedValue": 0.0
+              }
+            ],
+            "status": "O",
+            "authorizations": [
+              {
+                "dateCreated": "2021-11-27 00:00:00",
+                "processorTid": "PPCKEU123E456QW7S8A",
+                "tld": "FFCKEU123E456QW7S8A",
+                "status": "Completed",
+                "processor": {
+                  "name": "Aurus",
+                  "accountName": "Aurus BG Account",
+                  "merchantAccount": "123456789"
+                }
+              }
+            ]
+          },
+          {
+              "method": "CreditCard",
+              "option": "Visa/Mastercard/Amex",
+              "amounts": [
+                {
+                  "value": 288.5,
+                  "settledValue": 288.5,
+                  "refundedValue": 0.0
+                }
+              ],
+              "status": "O",
+              "authorizations": [
+                {
+                  "dateCreated": "2021-11-27 00:00:00",
+                  "processorTid": "PPCKEU123E456QW7S8A",
+                  "tld": "FFCKEU123E456QW7S8A",
+                  "status": "Completed",
+                  "processor": {
+                    "name": "Aurus",
+                    "accountName": "Aurus BG Account",
+                    "merchantAccount": "123456789"
+                  }
+                }
+              ]
+            }
+        ],
+        "amounts": [
+          {
+            "total": 288.5000,
+            "items": 64.5000,
+            "shipping": 24.0000,
+            "paid": 288.5,
+            "remaining": 0.0000
+          }
+        ]
+      },
+      {
+          "id": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+          "reference": "149505827",
+          "currency": "USD",
+          "dateCreated": "2020-11-05T02:50:12.208Z",
+          "status": "Settled",
+          "intruments": [
+            {
+              "method": "CreditCard",
+              "option": "Visa/Mastercard/Amex",
+              "amounts": [
+                {
+                  "value": 288.5,
+                  "settledValue": 288.5,
+                  "refundedValue": 0.0
+                }
+              ],
+              "status": "O",
+              "authorizations": [
+                {
+                  "dateCreated": "2021-11-27 00:00:00",
+                  "processorTid": "PPCKEU123E456QW7S8A",
+                  "tld": "FFCKEU123E456QW7S8A",
+                  "status": "Completed",
+                  "processor": {
+                    "name": "Aurus",
+                    "accountName": "Aurus BG Account",
+                    "merchantAccount": "123456789"
+                  }
+                }
+              ]
+            }
+          ],
+          "amounts": [
+            {
+              "total": 288.5000,
+              "items": 64.5000,
+              "shipping": 24.0000,
+              "paid": 288.5,
+              "remaining": 0.0000
+            }
+          ]
+      }
+    ],
+    "billingAddress": {
+      "firstName": "John",
+      "lastName": "Smith",
+      "addressLine1": "Rua da Lionesa",
+      "addressLine2": "446",
+      "addressLine3": "Edifício ABC",
+      "vatNumber": null,
+      "city": {
+        "name": null
+      },
+      "state": {
+        "code": "BA",
+        "name": "Bahia"
+      },
+      "country": {
+        "name": "United States",
+        "nativeName": "United States",
+        "alpha2Code": "US",
+        "alpha3Code": "USA",
+        "culture": "en-US",
+        "region": "The United States & Canada"
+      },
+      "zipCode": null,
+      "phoneContact": {
+        "value": "911111111",
+        "countryCode": "PT",
+        "countryCallingCode": "34"
+      }
+    }
+  },
+  "promocode": "PROMO10",
+  "currency": "USD",
+  "shippingAddress": {
+    "firstName": "John",
+    "lastName": "Smith",
+    "addressLine2": null,
+    "addressLine3": null,
+    "addressLine1": null,
+    "vatNumber": null,
+    "city": {
+      "name": null,
+      "stateId": null
+    },
+    "state": {
+      "code": "BA",
+      "name": "Bahia"
+    },
+    "country": {
+      "name": "United States",
+      "nativeName": "United States",
+      "alpha2Code": "US",
+      "alpha3Code": "USA",
+      "culture": "en-US",
+      "region": "The United States & Canada"
+    },
+    "zipCode": null,
+    "phoneContact": {
+      "phoneContact": "911111111",
+      "countryCode": "PT",
+      "countryCallingCode": "34"
+    }
+  },
+  "createdDate": "2020-04-24T14:00:00Z",
+  "updatedDate": "2020-04-24T15:00:00Z",
+  "items": [
+    {
+      "id": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+      "merchantId": 12092,
+      "marchantOrderId": 129753488,
+      "shippingOrderId": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+      "price": {
+        "priceExclTaxes": 97.00,
+        "priceInclTaxes": 97.0,
+        "discountExclTaxes": 64.67,
+        "discountInclTaxes": 64.67,
+        "discountRate": 40.0000,
+        "taxesRate": 0.00,
+        "taxesValue": 0.00,
+        "tags": [
+          "RegularSale",
+          "DDP"
+        ],
+        "priceWithoutPromotion": 161.67
+      },
+      "productSummary": {
+        "productId": 16106132,
+        "description": "BG Zoom Blazer Mid PRM",
+        "shortDescription": "BG Zoom Blazer"
+      },
+      "customAttributes": null,
+      "merchantOrderCode": "ABC129753000",
+      "idProductOffer": false,
+      "promotionOffer": [
+        {
+          "valueOffers": [
+            {
+              "discount": null
+            }
+          ]
+        },
+        {
+          "valueOffers": [
+            {
+              "discount": null
+            }
+          ]
+        }
+      ],
+      "tags": [
+        "fta"
+      ],
+      "selectedSaleIntent": "IMMEDIATE_FULFILMENT",
+      "uuid": null
+    },
+    {
+      "id": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+      "merchantId": 12092,
+      "marchantOrderId": 129753488,
+      "shippingOrderId": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+      "price": {
+        "priceExclTaxes": 97.00,
+        "priceInclTaxes": 97.0,
+        "discountExclTaxes": 64.67,
+        "discountInclTaxes": 64.67,
+        "discountRate": 40.0000,
+        "taxesRate": 0.00,
+        "taxesValue": 0.00,
+        "tags": [
+          "RegularSale",
+          "DDP"
+        ],
+        "priceWithoutPromotion": 161.67
+      },
+      "productSummary": {
+        "productId": 16106132,
+        "description": "BG Zoom Blazer Mid PRM",
+        "shortDescription": "BG Zoom Blazer"
+      },
+      "customAttributes": null,
+      "merchantOrderCode": "ABC129753000",
+      "idProductOffer": false,
+      "promotionOffer": [
+        {
+          "valueOffers": [
+            {
+              "discount": null
+            }
+          ]
+        }
+      ],
+      "tags": [
+        "fta"
+      ],
+      "selectedSaleIntent": "IMMEDIATE_FULFILMENT",
+      "uuid": null
+    }
+  ],
+  "totalQuantity": 1,
+  "subTotalAmount": 141.0,
+  "totalDiscount": 0.0,
+  "totalShippingFee": 0.0,
+  "totalTaxes": 26.2882,
+  "grandTotal": 157.00000,
+  "subTotalAmountExclTaxes": 114.61180,
+  "totalDomesticTaxes": 0.00000,
+  "promotionOffers": [
+    {
+      "shippingOffers": [
+        {
+          "discount": 0.0
+        },
+        {
+          "discount": 0.2
+        }
+      ],
+      "merchantOrderCode": "ABC107841741"
+    },
+    {
+      "shippingOffers": [
+        {
+          "discount": 0.3
+        },
+        {
+          "discount": 0.4
+        }
+      ],
+      "merchantOrderCode": "ABC107841741"
+    }
+  ],
+  "tags": [
+    "ExchangeOrder"
+  ]
+}

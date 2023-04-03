@@ -1,17 +1,45 @@
-ActivityTable:
+dynamodbActivityTable:
   Type: AWS::DynamoDB::Table
   Properties:
-    TableName: activity-${self:provider.stage}
     AttributeDefinitions:
       - AttributeName: pKey
         AttributeType: S
       - AttributeName: sKey
+        AttributeType: S
+      - AttributeName: status
+        AttributeType: S
+      - AttributeName: lastUpdateTime
         AttributeType: S
     KeySchema:
       - AttributeName: pKey
         KeyType: HASH
       - AttributeName: sKey
         KeyType: RANGE
-    ProvisionedThroughput:
-      ReadCapacityUnits: 1
-      WriteCapacityUnits: 1
+    BillingMode: PAY_PER_REQUEST
+    TableName: Tlog-${self:provider.stage}-ACTIVITY
+    StreamSpecification:
+      StreamViewType: NEW_AND_OLD_IMAGES
+    PointInTimeRecoverySpecification:
+      PointInTimeRecoveryEnabled: true
+    TimeToLiveSpecification:
+      AttributeName: expiration
+      Enabled: true
+
+
+# ActivityTable:
+#   Type: AWS::DynamoDB::Table
+#   Properties:
+#     TableName: activity-${self:provider.stage}
+#     AttributeDefinitions:
+#       - AttributeName: pKey
+#         AttributeType: S
+#       - AttributeName: sKey
+#         AttributeType: S
+#     KeySchema:
+#       - AttributeName: pKey
+#         KeyType: HASH
+#       - AttributeName: sKey
+#         KeyType: RANGE
+#     ProvisionedThroughput:
+#       ReadCapacityUnits: 1
+#       WriteCapacityUnits: 1
