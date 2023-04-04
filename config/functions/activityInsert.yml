@@ -1,8 +1,8 @@
 function:
-  handler: src/mapInsertDb/index.handler
+  handler: src/activityInsert/index.handler
   # events:
   #   - http:
-  #       path: tlog/insert
+  #       path: tlog/activityinsert
   #       method: POST
   #       cors:
   #         origin: https://hybcsn-${self:provider.stage}.nmgcloud.io
@@ -26,5 +26,5 @@ function:
     individually: true
     patterns:
       - "!**/*"
-      - "src/mapInsertDb/*.js"
+      - "src/activityInsert/*.js"
       - "src/shared/**"

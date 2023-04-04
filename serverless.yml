@@ -1,5 +1,9 @@
-service: NM-Tlog
+# service:
+#   name: NM-Tlog
+#   configValidationMode: error
 
+
+service: NM-Tlog
 frameworkVersion: '3'
 
 provider:
@@ -9,7 +13,18 @@ provider:
   stage: ${opt:stage, 'dev'}
   # tags: ${self:custom.tags}
   # stackTags: ${self:custom.tags}
-  iamRoleStatements: # default vpc lambda permissions
+  layers:
+    - !Ref TlogLayerLambdaLayer
+  environment:
+    REGION: ${self:provider.region}
+    # ACCOUNT: ${ssm:/${self:service}/${self:provider.stage}/aws.accountNumber} #${self:custom.accountNumber}
+    ENV: ${self:custom.stage}
+    ACTIVITY_TABLE: !Ref DynamodbActivityTable 
+    MERCHANT_TABLE: !Ref MerchantOrderTable
+    SALES_TABLE: !Ref SalesOrderTable
+    SHIPPING_TABLE: !Ref ShippingOrderTable
+    RETURN_TABLE: !Ref ReturnTable
+  iamRoleStatements: 
   - Effect: "Allow"
     Action: 
       - "logs:CreateLogGroup"
@@ -20,7 +35,6 @@ provider:
       - "ec2:DeleteNetworkInterface"
       - "ec2:AssignPrivateIpAddresses"
       - "ec2:UnassignPrivateIpAddresses"
-      - 
     Resource: "*"
   - Effect: "Allow"
     Action:
@@ -53,10 +67,7 @@ provider:
 
 
 
-  # environment:
-  #   REGION: ${self:provider.region}
-  #   ACCOUNT: ${ssm:/${self:service}/${self:provider.stage}/aws.accountNumber} #${self:custom.accountNumber}
-  #   ENV: ${self:custom.stage}
+
 
 custom:
   account: ${opt:account, 'bizdev'}
@@ -115,7 +126,21 @@ functions:
         - 'handler.js'
         - 'node_modules/**'
 
+layers:
+  TlogLayer:
+    path: lambdaLayer/lib
+    name: NM-Tlog-lambda-layer-${self:provider.stage}
+    description: tlog lambda layer for all node modules - ${self:provider.stage}
+    compatibleRuntimes:
+      - nodejs14.x
+    retain: false
+
 resources:
   Resources:
     QueueToTriggerLambda: ${file(config/queues/snsToDynamo.yml):QueueToTriggerLambda}
     QueueToTriggerLambdaDLQ: ${file(config/queues/snsToDynamo.yml):QueueToTriggerLambdaDLQ}
+    DynamodbActivityTable: ${file(config/dynamoDb/activity.yml):DynamodbActivityTable}
+    SalesOrderTable: ${file(config/dynamoDb/salesTable.yml):SalesOrderTable} 
+    MerchantOrderTable: ${file(config/dynamoDb/merchantTable.yml):MerchantOrderTable} 
+    ShippingOrderTable: ${file(config/dynamoDb/shippingTable.yml):ShippingOrderTable} 
+    ReturnTable: ${file(config/dynamoDb/returnTable.yml):ReturnTable}   

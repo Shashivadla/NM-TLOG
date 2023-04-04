@@ -3,10 +3,10 @@ const moment = require("moment-timezone");
 const AWS = require("aws-sdk");
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-async function insertActivity(Id, data) {
+async function insertActivity(data,pkey) {
   try {
     let sKey = `STAGES#${v4()}`;
-    let pKey = `MRCHT#${Id}`;
+    let pKey = pkey  //`MRCHT#${Id}`;
     let lastUpdateTime = getCstDate();
     let expiration = await getUnixExpiration(lastUpdateTime);
     let params = {
