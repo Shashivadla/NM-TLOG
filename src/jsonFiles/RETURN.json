@@ -1,0 +1,123 @@
+{
+    "id": "27255893",
+    "tenantId": "10000",
+    "customerId": "12345678",
+    "customerEmail": "dummy@example.com",
+    "returnMethodType": "InStore",
+    "returnStatus": "Created",
+    "numberOfBoxes": "1",
+    "transportInformation": {
+        "transportId": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+        "trackingCode": "4406317985",
+        "pickupDate": "2022-01-21T23:59:57Z",
+        "courierId": 0
+    },
+    "originAddress": {
+        "address1": "12 State Road 535",
+        "address2": "Ste 531",
+        "streetNumber": "65",
+        "city": "Hialeah",
+        "zipCode": "33014",
+        "state": {
+            "id": 16,
+            "code": "FL",
+            "name": "Florida"
+        },
+        "country": {
+            "id": 10,
+            "code": "US",
+            "name": "United States"
+        },
+        "name": "John Smith",
+        "phone": "99999999999"
+    },
+    "originAddressTransliterated": {},
+    "destinationAddress": {
+        "id": 1234,
+        "name": "Bergdorf Goodman WH",
+        "contactId": "1234",
+        "street": "Main Street Dallas",
+        "streetNumber": "1618",
+        "state": {
+            "id": "16",
+            "code": "TX",
+            "name": "Texas"
+        },
+        "city": {
+            "id": 13,
+            "name": "Dallas"
+        },
+        "country": {
+            "id": "10",
+            "code": "US",
+            "name": "United States"
+        },
+        "continent": {
+            "id": 1,
+            "code": "",
+            "name": "America"
+        },
+        "zipCode": "18640"
+    },
+    "geoLocation": {
+        "latitude": "-96.80",
+        "longitude": "32.77"
+    },
+    "pickupSchedule": {
+        "start": "2020-04-24T14:00:00Z",
+        "end": "2020-04-26T14:00:00Z"
+    },
+    "maxPickupDate": "2020-04-26T14:00:00Z",
+    "isIndirectReturn": false,
+    "inStoreLocationId": 1234,
+    "inStoreAddressId": 1234,
+    "items": [
+        {
+            "id": 61471536,
+            "merchantOrderId": "MJU999999999",
+            "merchantOrderItemId": 1234,
+            "shippingOrderId": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+            "lineUniqueIdentifier": "u123f86d-1019-4e66-bdee-8abebcadyuyu",
+            "orderId": "5CUM23",
+            "itemStatus": {
+                "description": "",
+                "code": "Open"
+            },
+            "returnReason": {
+                "code": "",
+                "description": "Other fitting problem"
+            },
+            "observations": "This shirt should be an L, not an M.",
+            "actions": [
+                {
+                    "type": "",
+                    "date": "2021-12-13T05:35:21.26Z",
+                    "origin": {
+                        "type": "1234",
+                        "userId": "",
+                        "tenantId": 1234
+                    }
+                }
+            ],
+            "exchangeId": "2addf86d-1019-4e66-bdee-8abebcadaaba"
+        }
+    ],
+    "overrides": [
+        {
+            "overrideTypeId": 1234,
+            "observations": ""
+        }
+    ],
+    "createdDate": "2021-12-13T05:35:21.26Z",
+    "createdByStaffMemberId": "2addf99j-1019-4e66-bdee-8abebcadaaba",
+    "refundPreference": {
+        "paymentType": "Default"
+    },
+    "returnCancellation": {
+        "id": "2addf86d-1019-4e66-bdee-8abebcadaaba",
+        "status": "InProgress",
+        "reason": ""
+    },
+    "contested": true,
+    "externalReturnId": ""
+}

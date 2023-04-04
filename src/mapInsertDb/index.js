@@ -188,26 +188,26 @@ async function shippingMapping(data) {
   await insertdb(map, "shippingOrder");
   for (let i = 0; i < data.addresses.length; i++) {
     let mapl1 = {
-      pKey: "SHIP#" + get(data, "id"),
+      pKey: "SHIP#" + get(data, "id",null),
       sKey: `ADDRESSES_${i + 1}`,
-      addresses_type: get(data, `addresses[${i}].type`),
-      addresses_address1: get(data, `addresses[${i}].address1`),
-      addresses_address2: get(data, `addresses[${i}].address2`),
-      addresses_complement: get(data, `addresses[${i}].complement`),
-      addresses_city_name: get(data, `addresses[${i}].city.name`),
-      addresses_state_name: get(data, `addresses[${i}].state.name`),
-      addresses_country_name: get(data, `addresses[${i}].country.name`),
+      addresses_type: get(data, `addresses[${i}].type`,null),
+      addresses_address1: get(data, `addresses[${i}].address1`,null),
+      addresses_address2: get(data, `addresses[${i}].address2`,null),
+      addresses_complement: get(data, `addresses[${i}].complement`,null),
+      addresses_city_name: get(data, `addresses[${i}].city.name`,null),
+      addresses_state_name: get(data, `addresses[${i}].state.name`,null),
+      addresses_country_name: get(data, `addresses[${i}].country.name`,null),
       addresses_country_alpha2Code: get(
         data,
-        `addresses[${i}].country.alpha2Code`
+        `addresses[${i}].country.alpha2Code`,null
       ),
-      addresses_district: get(data, `addresses[${i}].district`),
-      addresses_phone_number: get(data, `addresses[${i}].phone.number`),
+      addresses_district: get(data, `addresses[${i}].district`,null),
+      addresses_phone_number: get(data, `addresses[${i}].phone.number`,null),
       addresses_phone_directDistanceDialingCode: get(
         data,
-        `addresses[${i}].phone.directDistanceDialingCode`
+        `addresses[${i}].phone.directDistanceDialingCode`,null
       ),
-      addresses_zipCode: get(data, `addresses[${i}].zipCode`),
+      addresses_zipCode: get(data, `addresses[${i}].zipCode`,null),
     };
     console.log("mapl1");
     console.log(mapl1);
@@ -215,26 +215,26 @@ async function shippingMapping(data) {
   }
   for (let i = 0; i < data.totalValues.length; i++) {
     let mapl2 = {
-      pKey: "SHIP#" + get(data, "id"),
+      pKey: "SHIP#" + get(data, "id",null),
       sKey: `TOTALVALUES_${i + 1}`,
-      totalValues_type: get(data, `totalValues[${i}].type`),
+      totalValues_type: get(data, `totalValues[${i}].type`,null),
       totalValues_value_currencyCode: get(
         data,
-        `totalValues[${i}].value.currencyCode`
+        `totalValues[${i}].value.currencyCode`,null
       ),
       totalValues_value_amount: Number(
-        get(data, `totalValues[${i}].value.amount`)
+        get(data, `totalValues[${i}].value.amount`,null)
       ),
-      totalValues_taxes_type: get(data, `totalValues[${i}].taxes.type`),
+      totalValues_taxes_type: get(data, `totalValues[${i}].taxes.type`,null),
       totalValues_taxes_value_currencyCode: get(
         data,
-        `totalValues[${i}].taxes.value.currencyCode`
+        `totalValues[${i}].taxes.value.currencyCode`,null
       ),
       totalValues_taxes_value_amount: Number(
-        get(data, `totalValues[${i}].taxes.value.amount`)
+        get(data, `totalValues[${i}].taxes.value.amount`,null)
       ),
       totalValues_discountPromoCodeValue: Number(
-        get(data, `totalValues[${i}].discountPromoCodeValue`)
+        get(data, `totalValues[${i}].discountPromoCodeValue`,null)
       ),
     };
     console.log("mapl2");
@@ -243,54 +243,54 @@ async function shippingMapping(data) {
   }
   for (let i = 0; i < data.lines.length; i++) {
     let mapl3 = {
-      pKey: "SHIP#" + get(data, "id"),
-      sKey: `LINES_${get(data, `lines[${i}].id`)}`,
-      lines_id: get(data, `lines[${i}].id`),
+      pKey: "SHIP#" + get(data, "id",null),
+      sKey: `LINES_${get(data, `lines[${i}].id`,null)}`,
+      lines_id: get(data, `lines[${i}].id`,null),
       lines_references_lineNumber: Number(
-        get(data, `lines[${i}].references.lineNumber`)
+        get(data, `lines[${i}].references.lineNumber`,null)
       ),
-      lines_orderCode: get(data, `lines[${i}].orderCode`),
-      lines_stockPoint_code: Number(get(data, `lines[${i}].stockPoint.code`)),
+      lines_orderCode: get(data, `lines[${i}].orderCode`,null),
+      lines_stockPoint_code: Number(get(data, `lines[${i}].stockPoint.code`,null)),
       lines_productSummary_productNumber: Number(
-        get(data, `lines[${i}].productSummary.productNumber`)
+        get(data, `lines[${i}].productSummary.productNumber`,null)
       ),
       lines_productSummary_productType: get(
         data,
-        `lines[${i}].productSummary.productType`
+        `lines[${i}].productSummary.productType`,null
       ),
       lines_productSummary_harmonizedSystem_code: get(
         data,
-        `lines[${i}].productSummary.harmonizedSystem.code`
+        `lines[${i}].productSummary.harmonizedSystem.code`,null
       ),
       lines_productSummary_harmonizedSystem_country_name: get(
         data,
-        `lines[${i}].productSummary.harmonizedSystem.country.name`
+        `lines[${i}].productSummary.harmonizedSystem.country.name`,null
       ),
       lines_productSummary_harmonizedSystem_country_alpha2Code: get(
         data,
-        `lines[${i}].productSummary.harmonizedSystem.country.alpha2Code`
+        `lines[${i}].productSummary.harmonizedSystem.country.alpha2Code`,null
       ),
       lines_productSummary_shortDescription: get(
         data,
-        `lines[${i}].productSummary.shortDescription`
+        `lines[${i}].productSummary.shortDescription`,null
       ),
       lines_productSummary_variant_id: get(
         data,
-        `lines[${i}].productSummary.variant.id`
+        `lines[${i}].productSummary.variant.id`,null
       ),
       lines_productSummary_shippingConstraints_isCitesDocumentRequired: get(
         data,
-        `lines[${i}].productSummary.shippingConstraints.isCitesDocumentRequired`
+        `lines[${i}].productSummary.shippingConstraints.isCitesDocumentRequired`,null
       ),
       lines_productSummary_shippingConstraints_isDangerousProduct: get(
         data,
-        `lines[${i}].productSummary.shippingConstraints.isDangerousProduct`
+        `lines[${i}].productSummary.shippingConstraints.isDangerousProduct`,null
       ),
-      lines_priceId: get(data, `lines[${i}].priceId`),
-      lines_cancellation_type: get(data, `lines[${i}].cancellation.type`),
-      lines_gift_from: get(data, `lines[${i}].gift.from`),
-      lines_gift_to: get(data, `lines[${i}].gift.to`),
-      lines_gift_message: get(data, `lines[${i}].gift.message`),
+      lines_priceId: get(data, `lines[${i}].priceId`,null),
+      lines_cancellation_type: get(data, `lines[${i}].cancellation.type`,null),
+      lines_gift_from: get(data, `lines[${i}].gift.from`,null),
+      lines_gift_to: get(data, `lines[${i}].gift.to`,null),
+      lines_gift_message: get(data, `lines[${i}].gift.message`,null),
     };
     for (
       let j = 0;
@@ -298,18 +298,18 @@ async function shippingMapping(data) {
       j++
     ) {
       let mapl4 = {
-        pKey: "SHIP#" + get(data, "id"),
+        pKey: "SHIP#" + get(data, "id",null),
         sKey: `LINES_${get(
           data,
-          `lines[${i}].id`
+          `lines[${i}].id`,null
         )}_PRODUCTSUMMARY_VARIANT_BARCODES_${j + 1}`,
         lines_productSummary_variant_barcodes_type: get(
           data,
-          `lines[${i}].productSummary.variant.barcodes[${j}].type`
+          `lines[${i}].productSummary.variant.barcodes[${j}].type`,null
         ),
         lines_productSummary_variant_barcodes_barcode: get(
           data,
-          `lines[${i}].productSummary.variant.barcodes[${j}].barcode`
+          `lines[${i}].productSummary.variant.barcodes[${j}].barcode`,null
         ),
       };
       console.log("mapl4");
@@ -318,36 +318,36 @@ async function shippingMapping(data) {
     }
     for (let j = 0; j < data.lines[i].totalValues.length; j++) {
       let mapl5 = {
-        pKey: "SHIP#" + get(data, "id"),
-        sKey: `LINES_${get(data, `lines[${i}].id`)}_TOTALVALUES_${j + 1}`,
-        lines_totalValues_type: get(data, `lines[${i}].totalValues[${j}].type`),
+        pKey: "SHIP#" + get(data, "id",null),
+        sKey: `LINES_${get(data, `lines[${i}].id`,null)}_TOTALVALUES_${j + 1}`,
+        lines_totalValues_type: get(data, `lines[${i}].totalValues[${j}].type`,null),
         lines_totalValues_value_currencyCode: get(
           data,
-          `lines[${i}].totalValues[${j}].value.currencyCode`
+          `lines[${i}].totalValues[${j}].value.currencyCode`,null
         ),
         lines_totalValues_value_amount: Number(
-          get(data, `lines[${i}].totalValues[${j}].value.amount`)
+          get(data, `lines[${i}].totalValues[${j}].value.amount`,null)
         ),
         lines_totalValues_discountPromoCodeValue: Number(
-          get(data, `lines[${i}].totalValues[${j}].discountPromoCodeValue`)
+          get(data, `lines[${i}].totalValues[${j}].discountPromoCodeValue`,null)
         ),
       };
       for (let k = 0; k < data.lines[i].totalValues[j].taxes.length; k++) {
         let mapl6 = {
-          pKey: "SHIP#" + get(data, "id"),
-          sKey: `LINES_${get(data, `lines[${i}].id`)}_TOTALVAlUES_${
+          pKey: "SHIP#" + get(data, "id",null),
+          sKey: `LINES_${get(data, `lines[${i}].id`,null)}_TOTALVAlUES_${
             j + 1
           }_TAXES_${k + 1}`,
           lines_totalValues_taxes_type: get(
             data,
-            `lines[${i}].totalValues[${j}].taxes[${k}].type`
+            `lines[${i}].totalValues[${j}].taxes[${k}].type`,null
           ),
           lines_totalValues_taxes_value_currencyCode: get(
             data,
-            `lines[${i}].totalValues[${j}].taxes[${k}].value.currencyCode`
+            `lines[${i}].totalValues[${j}].taxes[${k}].value.currencyCode`,null
           ),
           lines_totalValues_taxes_value_amount: Number(
-            get(data, `lines[${i}].totalValues[${j}].taxes[${k}].value.amount`)
+            get(data, `lines[${i}].totalValues[${j}].taxes[${k}].value.amount`,null)
           ),
         };
         console.log("mapl6");
@@ -364,28 +364,28 @@ async function shippingMapping(data) {
   }
   for (let i = 0; i < data.packages.length; i++) {
     let mapl7 = {
-      pKey: "SHIP#" + get(data, "id"),
-      sKey: `PACKAGES_${get(data, `packages[${i}].id`)}`,
-      packages_id: get(data, `packages[${i}].id`),
-      packages_status: get(data, `packages[${i}].status`),
+      pKey: "SHIP#" + get(data, "id",null),
+      sKey: `PACKAGES_${get(data, `packages[${i}].id`,null)}`,
+      packages_id: get(data, `packages[${i}].id`,null),
+      packages_status: get(data, `packages[${i}].status`,null),
     };
     for (let j = 0; j < data.packages[i].boxes.length; j++) {
       let mapl8 = {
-        pKey: "SHIP#" + get(data, "id"),
-        sKey: `PACKAGES_${get(data, `packages[${i}].id`)}_BOXES_${j + 1}`,
+        pKey: "SHIP#" + get(data, "id",null),
+        sKey: `PACKAGES_${get(data, `packages[${i}].id`,null)}_BOXES_${j + 1}`,
         packages_boxes_boxCode: Number(
-          get(data, `packages[${i}].boxes[${j}].boxCode`)
+          get(data, `packages[${i}].boxes[${j}].boxCode`,null)
         ),
       };
       for (let k = 0; k < data.packages[i].boxes[j].lines.length; k++) {
         let mapl9 = {
-          pKey: "SHIP#" + get(data, "id"),
-          sKey: `PACKAGES_${get(data, `packages[${i}].id`)}_BOXES_${
+          pKey: "SHIP#" + get(data, "id",null),
+          sKey: `PACKAGES_${get(data, `packages[${i}].id`,null)}_BOXES_${
             j + 1
-          }_lines_${get(data, `packages[${i}].boxes[${j}].lines[${k}].id`)}`,
+          }_lines_${get(data, `packages[${i}].boxes[${j}].lines[${k}].id`,null)}`,
           packages_boxes_lines_id: get(
             data,
-            `packages[${i}].boxes[${j}].lines[${k}].id`
+            `packages[${i}].boxes[${j}].lines[${k}].id`,null
           ),
         };
         console.log("mapl9");
@@ -402,9 +402,9 @@ async function shippingMapping(data) {
   }
   for (let i = 0; i < data.availableActions.length; i++) {
     let mapl10 = {
-      pKey: "SHIP#" + get(data, "id"),
+      pKey: "SHIP#" + get(data, "id",null),
       sKey: `AVAILABLEACTIONS_${i + 1}`,
-      availableActions_action: get(data, `availableActions[${i}].action`),
+      availableActions_action: get(data, `availableActions[${i}].action`,null),
     };
     console.log("mapl10");
     console.log(mapl10);
@@ -412,12 +412,12 @@ async function shippingMapping(data) {
   }
   for (let i = 0; i < data.executedActions.length; i++) {
     let mapl11 = {
-      pKey: "SHIP#" + get(data, "id"),
+      pKey: "SHIP#" + get(data, "id",null),
       sKey: `EXECUTEDACTIONS_${i + 1}`,
-      executedActions_action: get(data, `executedActions[${i}].action`),
+      executedActions_action: get(data, `executedActions[${i}].action`,null),
       executedActions_executedDate: get(
         data,
-        `executedActions[${i}].executedDate`
+        `executedActions[${i}].executedDate`,null
       ),
     };
     console.log("mapl11");
