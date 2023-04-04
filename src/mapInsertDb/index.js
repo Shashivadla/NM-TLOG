@@ -160,309 +160,282 @@ async function merchantMapping(data) {
 }
 
 async function shippingMapping(data) {
-  try {
-    let map = {
-      pKey: "SHIP#" + get(data, "id", null),
-      sKey: "SHIPPINGORDER",
-      id: get(data, "id", null),
-      code: get(data, "code", null),
-      tenantId: Number(get(data, "tenantId", null)),
-      createdDate: get(data, "createdDate", null),
-      updatedDate: get(data, "updatedDate", null),
-      references_portalOrderCode: get(data, "references.portalOrderCode", null),
-      references_externalOrderCode: get(
+  let map = {
+    pKey: "SHIP#" + get(data, "id", null),
+    sKey: "SHIPPINGORDER",
+    id: get(data, "id", null),
+    code: get(data, "code", null),
+    tenantId: Number(get(data, "tenantId", null)),
+    createdDate: get(data, "createdDate", null),
+    updatedDate: get(data, "updatedDate", null),
+    references_portalOrderCode: get(data, "references.portalOrderCode", null),
+    references_externalOrderCode: get(
+      data,
+      "references.externalOrderCode",
+      null
+    ),
+    customer_type: get(data, "customer.type", null),
+    customer_name: get(data, "customer.name", null),
+    customer_userId: Number(get(data, "customer.userId", null)),
+    customer_email: get(data, "customer.email", null),
+    fulfillment_timeWindow: get(data, "fulfillment.timeWindow", null),
+    fulfillment_timeWindow_max: get(data, "fulfillment.timeWindow.max", null),
+    fulfillment_timeWindow_min: get(data, "fulfillment.timeWindow.min", null),
+    fulfillment_timeWindow_type: get(data, "fulfillment.timeWindow.type", null),
+    fulfillment_shipping_service_code: Number(
+      get(data, "fulfillment.shipping.service.code", null)
+    ),
+    clickAndCollect_collectPointId: get(
+      data,
+      "clickAndCollect.collectPointId",
+      null
+    ),
+    clickAndCollect_collectLimitDate: get(
+      data,
+      "clickAndCollect.collectLimitDate",
+      null
+    ),
+  };
+  console.log("map");
+  console.log(map);
+  await insertdb(map, "shippingOrder");
+  for (let i = 0; i < data.addresses.length; i++) {
+    let mapl1 = {
+      pKey: "SHIP#" + get(data, "id"),
+      sKey: `ADDRESSES_${i + 1}`,
+      addresses_type: get(data, `addresses[${i}].type`),
+      addresses_address1: get(data, `addresses[${i}].address1`),
+      addresses_address2: get(data, `addresses[${i}].address2`),
+      addresses_complement: get(data, `addresses[${i}].complement`),
+      addresses_city_name: get(data, `addresses[${i}].city.name`),
+      addresses_state_name: get(data, `addresses[${i}].state.name`),
+      addresses_country_name: get(data, `addresses[${i}].country.name`),
+      addresses_country_alpha2Code: get(
         data,
-        "references.externalOrderCode",
-        null
+        `addresses[${i}].country.alpha2Code`
       ),
-      customer_type: get(data, "customer.type", null),
-      customer_name: get(data, "customer.name", null),
-      customer_userId: Number(get(data, "customer.userId", null)),
-      customer_email: get(data, "customer.email", null),
-      fulfillment_timeWindow: get(data, "fulfillment.timeWindow", null),
-      fulfillment_timeWindow_max: get(data, "fulfillment.timeWindow.max", null),
-      fulfillment_timeWindow_min: get(data, "fulfillment.timeWindow.min", null),
-      fulfillment_timeWindow_type: get(
+      addresses_district: get(data, `addresses[${i}].district`),
+      addresses_phone_number: get(data, `addresses[${i}].phone.number`),
+      addresses_phone_directDistanceDialingCode: get(
         data,
-        "fulfillment.timeWindow.type",
-        null
+        `addresses[${i}].phone.directDistanceDialingCode`
       ),
-      fulfillment_shipping_service_code: Number(
-        get(data, "fulfillment.shipping.service.code", null)
-      ),
-      clickAndCollect_collectPointId: get(
+      addresses_zipCode: get(data, `addresses[${i}].zipCode`),
+    };
+    console.log("mapl1");
+    console.log(mapl1);
+    await insertdb(mapl1, "shippingOrder");
+  }
+  for (let i = 0; i < data.totalValues.length; i++) {
+    let mapl2 = {
+      pKey: "SHIP#" + get(data, "id"),
+      sKey: `TOTALVALUES_${i + 1}`,
+      totalValues_type: get(data, `totalValues[${i}].type`),
+      totalValues_value_currencyCode: get(
         data,
-        "clickAndCollect.collectPointId",
-        null
+        `totalValues[${i}].value.currencyCode`
       ),
-      clickAndCollect_collectLimitDate: get(
+      totalValues_value_amount: Number(
+        get(data, `totalValues[${i}].value.amount`)
+      ),
+      totalValues_taxes_type: get(data, `totalValues[${i}].taxes.type`),
+      totalValues_taxes_value_currencyCode: get(
         data,
-        "clickAndCollect.collectLimitDate",
-        null
+        `totalValues[${i}].taxes.value.currencyCode`
+      ),
+      totalValues_taxes_value_amount: Number(
+        get(data, `totalValues[${i}].taxes.value.amount`)
+      ),
+      totalValues_discountPromoCodeValue: Number(
+        get(data, `totalValues[${i}].discountPromoCodeValue`)
       ),
     };
-    console.log("map");
-    console.log(map);
-    await insertdb(map, "shippingOrder");
-    for (let i = 0; i < data.addresses.length; i++) {
-      let mapl1 = {
+    console.log("mapl2");
+    console.log(mapl2);
+    await insertdb(mapl2, "shippingOrder");
+  }
+  for (let i = 0; i < data.lines.length; i++) {
+    let mapl3 = {
+      pKey: "SHIP#" + get(data, "id"),
+      sKey: `LINES_${get(data, `lines[${i}].id`)}`,
+      lines_id: get(data, `lines[${i}].id`),
+      lines_references_lineNumber: Number(
+        get(data, `lines[${i}].references.lineNumber`)
+      ),
+      lines_orderCode: get(data, `lines[${i}].orderCode`),
+      lines_stockPoint_code: Number(get(data, `lines[${i}].stockPoint.code`)),
+      lines_productSummary_productNumber: Number(
+        get(data, `lines[${i}].productSummary.productNumber`)
+      ),
+      lines_productSummary_productType: get(
+        data,
+        `lines[${i}].productSummary.productType`
+      ),
+      lines_productSummary_harmonizedSystem_code: get(
+        data,
+        `lines[${i}].productSummary.harmonizedSystem.code`
+      ),
+      lines_productSummary_harmonizedSystem_country_name: get(
+        data,
+        `lines[${i}].productSummary.harmonizedSystem.country.name`
+      ),
+      lines_productSummary_harmonizedSystem_country_alpha2Code: get(
+        data,
+        `lines[${i}].productSummary.harmonizedSystem.country.alpha2Code`
+      ),
+      lines_productSummary_shortDescription: get(
+        data,
+        `lines[${i}].productSummary.shortDescription`
+      ),
+      lines_productSummary_variant_id: get(
+        data,
+        `lines[${i}].productSummary.variant.id`
+      ),
+      lines_productSummary_shippingConstraints_isCitesDocumentRequired: get(
+        data,
+        `lines[${i}].productSummary.shippingConstraints.isCitesDocumentRequired`
+      ),
+      lines_productSummary_shippingConstraints_isDangerousProduct: get(
+        data,
+        `lines[${i}].productSummary.shippingConstraints.isDangerousProduct`
+      ),
+      lines_priceId: get(data, `lines[${i}].priceId`),
+      lines_cancellation_type: get(data, `lines[${i}].cancellation.type`),
+      lines_gift_from: get(data, `lines[${i}].gift.from`),
+      lines_gift_to: get(data, `lines[${i}].gift.to`),
+      lines_gift_message: get(data, `lines[${i}].gift.message`),
+    };
+    for (
+      let j = 0;
+      j < data.lines[i].productSummary.variant.barcodes.length;
+      j++
+    ) {
+      let mapl4 = {
         pKey: "SHIP#" + get(data, "id"),
-        sKey: `ADDRESSES_${i + 1}`,
-        addresses_type: get(data, `addresses[${i}].type`),
-        addresses_address1: get(data, `addresses[${i}].address1`),
-        addresses_address2: get(data, `addresses[${i}].address2`),
-        addresses_complement: get(data, `addresses[${i}].complement`),
-        addresses_city_name: get(data, `addresses[${i}].city.name`),
-        addresses_state_name: get(data, `addresses[${i}].state.name`),
-        addresses_country_name: get(data, `addresses[${i}].country.name`),
-        addresses_country_alpha2Code: get(
+        sKey: `LINES_${get(
           data,
-          `addresses[${i}].country.alpha2Code`
-        ),
-        addresses_district: get(data, `addresses[${i}].district`),
-        addresses_phone_number: get(data, `addresses[${i}].phone.number`),
-        addresses_phone_directDistanceDialingCode: get(
+          `lines[${i}].id`
+        )}_PRODUCTSUMMARY_VARIANT_BARCODES_${j + 1}`,
+        lines_productSummary_variant_barcodes_type: get(
           data,
-          `addresses[${i}].phone.directDistanceDialingCode`
+          `lines[${i}].productSummary.variant.barcodes[${j}].type`
         ),
-        addresses_zipCode: get(data, `addresses[${i}].zipCode`),
+        lines_productSummary_variant_barcodes_barcode: get(
+          data,
+          `lines[${i}].productSummary.variant.barcodes[${j}].barcode`
+        ),
       };
-      console.log("mapl1");
-      console.log(mapl1);
-      await insertdb(mapl1, "shippingOrder");
+      console.log("mapl4");
+      console.log(mapl4);
+      await insertdb(mapl4, "shippingOrder");
     }
-    for (let i = 0; i < data.totalValues.length; i++) {
-      let mapl2 = {
+    for (let j = 0; j < data.lines[i].totalValues.length; j++) {
+      let mapl5 = {
         pKey: "SHIP#" + get(data, "id"),
-        sKey: `TOTALVALUES_${i + 1}`,
-        totalValues_type: get(data, `totalValues[${i}].type`),
-        totalValues_value_currencyCode: get(
+        sKey: `LINES_${get(data, `lines[${i}].id`)}_TOTALVALUES_${j + 1}`,
+        lines_totalValues_type: get(data, `lines[${i}].totalValues[${j}].type`),
+        lines_totalValues_value_currencyCode: get(
           data,
-          `totalValues[${i}].value.currencyCode`
+          `lines[${i}].totalValues[${j}].value.currencyCode`
         ),
-        totalValues_value_amount: Number(
-          get(data, `totalValues[${i}].value.amount`)
+        lines_totalValues_value_amount: Number(
+          get(data, `lines[${i}].totalValues[${j}].value.amount`)
         ),
-        totalValues_taxes_type: get(data, `totalValues[${i}].taxes.type`),
-        totalValues_taxes_value_currencyCode: get(
-          data,
-          `totalValues[${i}].taxes.value.currencyCode`
-        ),
-        totalValues_taxes_value_amount: Number(
-          get(data, `totalValues[${i}].taxes.value.amount`)
-        ),
-        totalValues_discountPromoCodeValue: Number(
-          get(data, `totalValues[${i}].discountPromoCodeValue`)
+        lines_totalValues_discountPromoCodeValue: Number(
+          get(data, `lines[${i}].totalValues[${j}].discountPromoCodeValue`)
         ),
       };
-      console.log("mapl2");
-      console.log(mapl2);
-      await insertdb(mapl2, "shippingOrder");
-    }
-    for (let i = 0; i < data.lines.length; i++) {
-      let mapl3 = {
-        pKey: "SHIP#" + get(data, "id"),
-        sKey: `LINES_${get(data, `lines[${i}].id`)}`,
-        lines_id: get(data, `lines[${i}].id`),
-        lines_references_lineNumber: Number(
-          get(data, `lines[${i}].references.lineNumber`)
-        ),
-        lines_orderCode: get(data, `lines[${i}].orderCode`),
-        lines_stockPoint_code: Number(get(data, `lines[${i}].stockPoint.code`)),
-        lines_productSummary_productNumber: Number(
-          get(data, `lines[${i}].productSummary.productNumber`)
-        ),
-        lines_productSummary_productType: get(
-          data,
-          `lines[${i}].productSummary.productType`
-        ),
-        lines_productSummary_harmonizedSystem_code: get(
-          data,
-          `lines[${i}].productSummary.harmonizedSystem.code`
-        ),
-        lines_productSummary_harmonizedSystem_country_name: get(
-          data,
-          `lines[${i}].productSummary.harmonizedSystem.country.name`
-        ),
-        lines_productSummary_harmonizedSystem_country_alpha2Code: get(
-          data,
-          `lines[${i}].productSummary.harmonizedSystem.country.alpha2Code`
-        ),
-        lines_productSummary_shortDescription: get(
-          data,
-          `lines[${i}].productSummary.shortDescription`
-        ),
-        lines_productSummary_variant_id: get(
-          data,
-          `lines[${i}].productSummary.variant.id`
-        ),
-        lines_productSummary_shippingConstraints_isCitesDocumentRequired: get(
-          data,
-          `lines[${i}].productSummary.shippingConstraints.isCitesDocumentRequired`
-        ),
-        lines_productSummary_shippingConstraints_isDangerousProduct: get(
-          data,
-          `lines[${i}].productSummary.shippingConstraints.isDangerousProduct`
-        ),
-        lines_priceId: get(data, `lines[${i}].priceId`),
-        lines_cancellation_type: get(data, `lines[${i}].cancellation.type`),
-        lines_gift_from: get(data, `lines[${i}].gift.from`),
-        lines_gift_to: get(data, `lines[${i}].gift.to`),
-        lines_gift_message: get(data, `lines[${i}].gift.message`),
-      };
-      for (
-        let j = 0;
-        j < data.lines[i].productSummary.variant.barcodes.length;
-        j++
-      ) {
-        let mapl4 = {
+      for (let k = 0; k < data.lines[i].totalValues[j].taxes.length; k++) {
+        let mapl6 = {
           pKey: "SHIP#" + get(data, "id"),
-          sKey: `LINES_${get(
+          sKey: `LINES_${get(data, `lines[${i}].id`)}_TOTALVAlUES_${
+            j + 1
+          }_TAXES_${k + 1}`,
+          lines_totalValues_taxes_type: get(
             data,
-            `lines[${i}].id`
-          )}_PRODUCTSUMMARY_VARIANT_BARCODES_${j + 1}`,
-          lines_productSummary_variant_barcodes_type: get(
-            data,
-            `lines[${i}].productSummary.variant.barcodes[${j}].type`
+            `lines[${i}].totalValues[${j}].taxes[${k}].type`
           ),
-          lines_productSummary_variant_barcodes_barcode: get(
+          lines_totalValues_taxes_value_currencyCode: get(
             data,
-            `lines[${i}].productSummary.variant.barcodes[${j}].barcode`
+            `lines[${i}].totalValues[${j}].taxes[${k}].value.currencyCode`
+          ),
+          lines_totalValues_taxes_value_amount: Number(
+            get(data, `lines[${i}].totalValues[${j}].taxes[${k}].value.amount`)
           ),
         };
-        console.log("mapl4");
-        console.log(mapl4);
-        await insertdb(mapl4, "shippingOrder");
+        console.log("mapl6");
+        console.log(mapl6);
+        await insertdb(mapl6, "shippingOrder");
       }
-      for (let j = 0; j < data.lines[i].totalValues.length; j++) {
-        let mapl5 = {
-          pKey: "SHIP#" + get(data, "id"),
-          sKey: `LINES_${get(data, `lines[${i}].id`)}_TOTALVALUES_${j + 1}`,
-          lines_totalValues_type: get(
-            data,
-            `lines[${i}].totalValues[${j}].type`
-          ),
-          lines_totalValues_value_currencyCode: get(
-            data,
-            `lines[${i}].totalValues[${j}].value.currencyCode`
-          ),
-          lines_totalValues_value_amount: Number(
-            get(data, `lines[${i}].totalValues[${j}].value.amount`)
-          ),
-          lines_totalValues_discountPromoCodeValue: Number(
-            get(data, `lines[${i}].totalValues[${j}].discountPromoCodeValue`)
-          ),
-        };
-        for (let k = 0; k < data.lines[i].totalValues[j].taxes.length; k++) {
-          let mapl6 = {
-            pKey: "SHIP#" + get(data, "id"),
-            sKey: `LINES_${get(data, `lines[${i}].id`)}_TOTALVAlUES_${
-              j + 1
-            }_TAXES_${k + 1}`,
-            lines_totalValues_taxes_type: get(
-              data,
-              `lines[${i}].totalValues[${j}].taxes[${k}].type`
-            ),
-            lines_totalValues_taxes_value_currencyCode: get(
-              data,
-              `lines[${i}].totalValues[${j}].taxes[${k}].value.currencyCode`
-            ),
-            lines_totalValues_taxes_value_amount: Number(
-              get(
-                data,
-                `lines[${i}].totalValues[${j}].taxes[${k}].value.amount`
-              )
-            ),
-          };
-          console.log("mapl6");
-          console.log(mapl6);
-          await insertdb(mapl6, "shippingOrder");
-        }
-        console.log("mapl5");
-        console.log(mapl5);
-        await insertdb(mapl5, "shippingOrder");
-      }
-      console.log("mapl3");
-      console.log(mapl3);
-      await insertdb(mapl3, "shippingOrder");
+      console.log("mapl5");
+      console.log(mapl5);
+      await insertdb(mapl5, "shippingOrder");
     }
-    for (let i = 0; i < data.packages.length; i++) {
-      let mapl7 = {
+    console.log("mapl3");
+    console.log(mapl3);
+    await insertdb(mapl3, "shippingOrder");
+  }
+  for (let i = 0; i < data.packages.length; i++) {
+    let mapl7 = {
+      pKey: "SHIP#" + get(data, "id"),
+      sKey: `PACKAGES_${get(data, `packages[${i}].id`)}`,
+      packages_id: get(data, `packages[${i}].id`),
+      packages_status: get(data, `packages[${i}].status`),
+    };
+    for (let j = 0; j < data.packages[i].boxes.length; j++) {
+      let mapl8 = {
         pKey: "SHIP#" + get(data, "id"),
-        sKey: `PACKAGES_${get(data, `packages[${i}].id`)}`,
-        packages_id: get(data, `packages[${i}].id`),
-        packages_status: get(data, `packages[${i}].status`),
+        sKey: `PACKAGES_${get(data, `packages[${i}].id`)}_BOXES_${j + 1}`,
+        packages_boxes_boxCode: Number(
+          get(data, `packages[${i}].boxes[${j}].boxCode`)
+        ),
       };
-      for (let j = 0; j < data.packages[i].boxes.length; j++) {
-        let mapl8 = {
+      for (let k = 0; k < data.packages[i].boxes[j].lines.length; k++) {
+        let mapl9 = {
           pKey: "SHIP#" + get(data, "id"),
-          sKey: `PACKAGES_${get(data, `packages[${i}].id`)}_BOXES_${j + 1}`,
-          packages_boxes_boxCode: Number(
-            get(data, `packages[${i}].boxes[${j}].boxCode`)
+          sKey: `PACKAGES_${get(data, `packages[${i}].id`)}_BOXES_${
+            j + 1
+          }_lines_${get(data, `packages[${i}].boxes[${j}].lines[${k}].id`)}`,
+          packages_boxes_lines_id: get(
+            data,
+            `packages[${i}].boxes[${j}].lines[${k}].id`
           ),
         };
-        for (let k = 0; k < data.packages[i].boxes[j].lines.length; k++) {
-          let mapl9 = {
-            pKey: "SHIP#" + get(data, "id"),
-            sKey: `PACKAGES_${get(data, `packages[${i}].id`)}_BOXES_${
-              j + 1
-            }_lines_${get(data, `packages[${i}].boxes[${j}].lines[${k}].id`)}`,
-            packages_boxes_lines_id: get(
-              data,
-              `packages[${i}].boxes[${j}].lines[${k}].id`
-            ),
-          };
-          console.log("mapl9");
-          console.log(mapl8);
-          await insertdb(mapl9, "shippingOrder");
-        }
-        console.log("mapl8");
+        console.log("mapl9");
         console.log(mapl8);
-        await insertdb(mapl8, "shippingOrder");
+        await insertdb(mapl9, "shippingOrder");
       }
-      console.log("mapl7");
-      console.log(mapl7);
-      await insertdb(mapl7, "shippingOrder");
+      console.log("mapl8");
+      console.log(mapl8);
+      await insertdb(mapl8, "shippingOrder");
     }
-    for (let i = 0; i < data.availableActions.length; i++) {
-      let mapl10 = {
-        pKey: "SHIP#" + get(data, "id"),
-        sKey: `AVAILABLEACTIONS_${i + 1}`,
-        availableActions_action: get(data, `availableActions[${i}].action`),
-      };
-      console.log("mapl10");
-      console.log(mapl10);
-      await insertdb(mapl10, "shippingOrder");
-    }
-    for (let i = 0; i < data.executedActions.length; i++) {
-      let mapl11 = {
-        pKey: "SHIP#" + get(data, "id"),
-        sKey: `EXECUTEDACTIONS_${i + 1}`,
-        executedActions_action: get(data, `executedActions[${i}].action`),
-        executedActions_executedDate: get(
-          data,
-          `executedActions[${i}].executedDate`
-        ),
-      };
-      console.log("mapl11");
-      console.log(mapl11);
-      await insertdb(mapl11, "shippingOrder");
-    }
-
-    let data = {
-      status: "SUCESS",
-      message: "Shipping data inserted successfully",
-      lastUpdateId: "shippingMapping",
+    console.log("mapl7");
+    console.log(mapl7);
+    await insertdb(mapl7, "shippingOrder");
+  }
+  for (let i = 0; i < data.availableActions.length; i++) {
+    let mapl10 = {
+      pKey: "SHIP#" + get(data, "id"),
+      sKey: `AVAILABLEACTIONS_${i + 1}`,
+      availableActions_action: get(data, `availableActions[${i}].action`),
     };
-    await insertActivity(id, data);
-  } catch (error) {
-    let data = {
-      status: "ERROR",
-      message: "Shipping data not inserted",
-      lastUpdateId: "shippingMapping",
+    console.log("mapl10");
+    console.log(mapl10);
+    await insertdb(mapl10, "shippingOrder");
+  }
+  for (let i = 0; i < data.executedActions.length; i++) {
+    let mapl11 = {
+      pKey: "SHIP#" + get(data, "id"),
+      sKey: `EXECUTEDACTIONS_${i + 1}`,
+      executedActions_action: get(data, `executedActions[${i}].action`),
+      executedActions_executedDate: get(
+        data,
+        `executedActions[${i}].executedDate`
+      ),
     };
-    await insertActivity(id, data);
-    console.error(`Error: ${error.message}`);
+    console.log("mapl11");
+    console.log(mapl11);
+    await insertdb(mapl11, "shippingOrder");
   }
 }
 
