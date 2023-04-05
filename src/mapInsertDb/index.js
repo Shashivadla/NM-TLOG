@@ -1,10 +1,11 @@
 const get = require("lodash.get");
 const AWS = require("aws-sdk");
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+const { insertActivity } = require("../activityInsert/index");
+const { insertdb } = require("../shared/db");
 
 module.exports.handler = async (event) => {
   console.info("Event: ", JSON.stringify(event));
-  // console.info(event.Records[0].body);
   try {
     let data = JSON.parse(event.Records[0].body);
     console.log("data", data);
@@ -26,8 +27,7 @@ module.exports.handler = async (event) => {
     console.error(`Error: ${error.message}`);
   }
 };
-
-
+//--merchant
 async function merchantMapping(data) {
   try {
     let map = {
@@ -45,7 +45,7 @@ async function merchantMapping(data) {
       shippingOrderId: get(data, "shippingOrderId", null),
     };
     console.log("main data", map);
-    await insertdb(map, "merchantOrder");
+    await insertdb(map, process.env.MERCHANT_TABLE);
     console.log(data.values.taxes.length);
 
 
@@ -59,7 +59,7 @@ async function merchantMapping(data) {
         values_taxes_values: Number(get(taxes[i], `values`, null)),
       };
       console.log("first data", map_l1);
-      await insertdb(map_l1, "merchantOrder");
+      await insertdb(map_l1, process.env.MERCHANT_TABLE);
     }
 
 
@@ -74,7 +74,7 @@ async function merchantMapping(data) {
         promocodes_type: get(promocodes[i], `type`, null),
       };
       console.log("sec data", map_l2);
-      await insertdb(map_l2, "merchantOrder");
+      await insertdb(map_l2, process.env.MERCHANT_TABLE);
     }
 
     let shippingOffers = get(data, "promotionOffers.shippingOffers", []);
@@ -87,7 +87,7 @@ async function merchantMapping(data) {
           get(shippingOffers[i], `discount`, null)
         ),
       };
-      await insertdb(map_l3, "merchantOrder");
+      await insertdb(map_l3, process.env.MERCHANT_TABLE);
     }
 
     let lines = get(data, "lines", []);
@@ -114,7 +114,8 @@ async function merchantMapping(data) {
           null
         ),
       };
-      await insertdb(map_l4, "merchantOrder");
+      await insertdb(map_l4, process.env.MERCHANT_TABLE);
+      let taxeslength = data.lines[i].values.taxes.length;
 
       let taxes = get(lines[i], `values.taxes`, []);
       for (let j = 0; j < taxes.length; j++) {
@@ -126,16 +127,31 @@ async function merchantMapping(data) {
           lines_values_taxes_value: get(taxes[j], `value`, null),
           lines_values_taxes_rate: get(taxes[j], `rate`, null),
         };
-        await insertdb(map_l5, "merchantOrder");
+        await insertdb(map_l5, process.env.MERCHANT_TABLE);
       }
     }
+
+    let data = {
+      status: "SUCCESS",
+      message: "Merchant data inserted Successfully",
+      lastUpdateId: "merchantMapping",
+    };
+    await insertActivity(`MRCHT#${id}`, data);
   } catch (error) {
+    let data = {
+      status: "ERROR",
+      message: "Merchant data not inserted",
+      lastUpdateId: "merchantMapping",
+    };
+    await insertActivity(`MRCHT#${id}`, data);
     console.error(`Error: ${error.message}`);
   }
 }
 
+//--shipping
 
 async function shippingMapping(data) {
+  try{
   let map = {
     pKey: "SHIP#" + get(data, "id", null),
     sKey: "SHIPPINGORDER",
@@ -446,7 +462,24 @@ async function shippingMapping(data) {
     console.log(mapl11);
     await insertdb(mapl11, "shippingOrder");
   }
+  let data = {
+    status: "SUCESS",
+    message: "SHIP data inserted successfully",
+    lastUpdateId: "shippingMapping",
+  };
+  await insertActivity(`SHIP#${id}`, data);
+} catch (error) {
+  let data = {
+    status: "ERROR",
+    message: "SHIP data not inserted",
+    lastUpdateId: "shippingMapping",
+  };
+  await insertActivity(`SHIP#${id}`, data);
+  console.error(`Error: ${error.message}`);
 }
+}
+
+//--sales
 
 
 
@@ -842,13 +875,35 @@ async function salesMapping(data) {
         await insertdb(mappedsalesData10, "salesOrder");
       }
     }
+
+
+
+
+
+// async function insertdb(data, tableName) {
+//   let params;
+//   try {
+//     params = {
+//       TableName: tableName,
+//       Item: data,
+    let data = {
+      status: "SUCESS",
+      message: "Sales data inserted successfully",
+      lastUpdateId: "salesMapping",
+    };
+    await insertActivity(`SALES#${id}`, data);
   } catch (error) {
+    let data = {
+      status: "ERROR",
+      message: "sales data not inserted",
+      lastUpdateId: "salesMapping",
+    };
+    await insertActivity(`SALES#${id}`, data);
     console.error(`Error: ${error.message}`);
   }
 }
 
-
-
+// -- return
 async function returnMapping(data) {
   try {
     let map = {
@@ -1044,17 +1099,13 @@ async function returnMapping(data) {
   }
 }
 
-async function insertdb(data, tableName) {
-  let params;
-  try {
-    params = {
-      TableName: tableName,
-      Item: data,
-    };
-    console.info("insert params", params);
-    return await dynamodb.put(params).promise();
-  } catch (e) {
-    console.error("Put Item Error: ", e, "\nPut params: ", params);
-    throw "PutItemError";
-  }
-}
+
+
+
+
+
+
+
+
+
+
