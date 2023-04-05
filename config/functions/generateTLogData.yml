@@ -4,8 +4,9 @@ function:
   handler: src/generateTLogData/index.handler
   events:
     - stream:
-      type: dynamodb
-      arn: !GetAtt TLogTable.StreamArn
+        type: dynamodb
+        arn: !GetAtt MerchantOrderTable.StreamArn
+        batchWindow: 10
   layers:
     - !Ref TlogLayerLambdaLayer
   package:

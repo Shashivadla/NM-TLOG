@@ -39,6 +39,10 @@ provider:
     Resource: "*"
   - Effect: "Allow"
     Action:
+    - dynamodb:GetRecords
+    - dynamodb:GetShardIterator
+    - dynamodb:DescribeStream
+    - dynamodb:ListStreams
     - dynamodb:DescribeTable
     - dynamodb:Query
     - dynamodb:Scan
@@ -55,6 +59,7 @@ provider:
       - !GetAtt DynamodbActivityTable.Arn
       - !GetAtt ReturnTable.Arn
       - !GetAtt TLogTable.Arn
+      - !GetAtt MerchantOrderTable.StreamArn
 
 
 
