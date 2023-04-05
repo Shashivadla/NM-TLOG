@@ -4,11 +4,17 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const { insertActivity } = require("../activityInsert/index");
 const { insertdb } = require("../shared/db");
 
+    const data1 = require("../jsonfiles/MERCHANT_ORDER.json");
+    const v = JSON.stringify(data1)
+
+
 module.exports.handler = async (event) => {
   console.info("Event: ", JSON.stringify(event));
   try {
-    let data = JSON.parse(event.Records[0].body);
-    console.log("data", data);
+    // let data = JSON.parse(event.Records[0].body);
+    // console.log("data", data);
+let data = JSON.parse(v)
+// console.log(data)
     const keysArray = Object.keys(data);
     const secondKeyName = keysArray[1];
     console.log(secondKeyName);
@@ -45,7 +51,8 @@ async function merchantMapping(data) {
       shippingOrderId: get(data, "shippingOrderId", null),
     };
     console.log("main data", map);
-    await insertdb(map, process.env.MERCHANT_TABLE);
+    // await insertdb(map,process.env.MERCHANT_TABLE);
+    await insertdb(map,"Merchant1");
     console.log(data.values.taxes.length);
 
 
@@ -59,7 +66,8 @@ async function merchantMapping(data) {
         values_taxes_values: Number(get(taxes[i], `values`, null)),
       };
       console.log("first data", map_l1);
-      await insertdb(map_l1, process.env.MERCHANT_TABLE);
+      await insertdb(map_l1,merchantTable);
+      // await insertdb(map_l1,process.env.MERCHANT_TABLE);
     }
 
 
@@ -74,7 +82,8 @@ async function merchantMapping(data) {
         promocodes_type: get(promocodes[i], `type`, null),
       };
       console.log("sec data", map_l2);
-      await insertdb(map_l2, process.env.MERCHANT_TABLE);
+      // await insertdb(map_l2, process.env.MERCHANT_TABLE);
+      await insertdb(map_l2,"Merchant1");
     }
 
     let shippingOffers = get(data, "promotionOffers.shippingOffers", []);
@@ -87,7 +96,9 @@ async function merchantMapping(data) {
           get(shippingOffers[i], `discount`, null)
         ),
       };
-      await insertdb(map_l3, process.env.MERCHANT_TABLE);
+      // await insertdb(map_l3, process.env.MERCHANT_TABLE);
+      await insertdb(map_l3,"Merchant1");
+
     }
 
     let lines = get(data, "lines", []);
@@ -114,7 +125,9 @@ async function merchantMapping(data) {
           null
         ),
       };
-      await insertdb(map_l4, process.env.MERCHANT_TABLE);
+      // await insertdb(map_l4, process.env.MERCHANT_TABLE);
+      await insertdb(map_l4,"Merchant1");
+
       let taxeslength = data.lines[i].values.taxes.length;
 
       let taxes = get(lines[i], `values.taxes`, []);
@@ -127,7 +140,9 @@ async function merchantMapping(data) {
           lines_values_taxes_value: get(taxes[j], `value`, null),
           lines_values_taxes_rate: get(taxes[j], `rate`, null),
         };
-        await insertdb(map_l5, process.env.MERCHANT_TABLE);
+        // await insertdb(map_l5, process.env.MERCHANT_TABLE);
+        await insertdb(map_l5,"Merchant1");
+
       }
     }
 
@@ -136,14 +151,17 @@ async function merchantMapping(data) {
       message: "Merchant data inserted Successfully",
       lastUpdateId: "merchantMapping",
     };
-    await insertActivity(`MRCHT#${id}`, data);
+    var id = get(data, "id", null);
+    console.log("VVVVVVVVv",id)
+    // await insertActivity(`MRCHT#${id}`, data);
   } catch (error) {
     let data = {
       status: "ERROR",
       message: "Merchant data not inserted",
       lastUpdateId: "merchantMapping",
     };
-    await insertActivity(`MRCHT#${id}`, data);
+    // await insertActivity(`MRCHT#${id}`, data);
+    console.log("kkkkkkkk",id)
     console.error(`Error: ${error.message}`);
   }
 }
@@ -1098,3 +1116,5 @@ async function returnMapping(data) {
     console.error(`Error: ${error.message}`);
   }
 }
+
+exports.handler({})
