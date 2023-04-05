@@ -1,0 +1,16 @@
+function:
+  description: nm generate TLog data - ${self:provider.stage}
+  name: nm-generate-t-log-data-${self:provider.stage}
+  handler: src/generateTLogData/index.handler
+  events:
+    - stream:
+      type: dynamodb
+      arn: !GetAtt TLogTable.StreamArn
+  layers:
+    - !Ref TlogLayerLambdaLayer
+  package:
+    individually: true
+    patterns:
+      - "!**/*"
+      - "src/generateTLogData/**"
+      - "src/shared/**"

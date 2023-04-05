@@ -19,6 +19,7 @@ provider:
     SALES_TABLE: !Ref SalesOrderTable
     SHIPPING_TABLE: !Ref ShippingOrderTable
     RETURN_TABLE: !Ref ReturnTable
+    T_Log_Table: !Ref TLogTable
   iamRoleStatements: 
   - Effect: "Allow"
     Action:
@@ -53,6 +54,7 @@ provider:
       - !GetAtt ShippingOrderTable.Arn
       - !GetAtt DynamodbActivityTable.Arn
       - !GetAtt ReturnTable.Arn
+      - !GetAtt TLogTable.Arn
 
 
 
@@ -72,6 +74,7 @@ package:
 functions:
   mapInsertDb: ${file(config/functions/mapInsertDb.yml):function}
   # activityInsert: ${file(config/functions/activityInsert.yml):function}
+  generateTLogData: ${file(config/functions/generateTLogData.yml):function}
 
 layers:
   TlogLayer:
@@ -90,4 +93,5 @@ resources:
     SalesOrderTable: ${file(config/dynamoDb/salesTable.yml):SalesOrderTable} 
     MerchantOrderTable: ${file(config/dynamoDb/merchantTable.yml):MerchantOrderTable} 
     ShippingOrderTable: ${file(config/dynamoDb/shippingTable.yml):ShippingOrderTable} 
-    ReturnTable: ${file(config/dynamoDb/returnTable.yml):ReturnTable}   
+    ReturnTable: ${file(config/dynamoDb/returnTable.yml):ReturnTable}
+    TLogTable: ${file(config/dynamoDb/tLogTable.yml):TLogTable}
