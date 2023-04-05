@@ -1,25 +1,5 @@
 function:
-  handler: src/activityInsert/index.handler
-  # events:
-  #   - http:
-  #       path: tlog/activityinsert
-  #       method: POST
-  #       cors:
-  #         origin: https://hybcsn-${self:provider.stage}.nmgcloud.io
-  #         headers:
-  #           - Access-Control-Allow-Origin
-  #           - X-Request-Id
-  #           - Access-Control-Allow-Headers
-  #           - Authorization
-  #           - Content-Type
-  #           - X-Amz-Date
-  #           - X-Amz-Security-Token
-  #           - X-Amz-User-Agent
-  #           - X-Customer-Id
-  #           - X-Api-Key
-  #         allowCredentials: true
-  #       authorizer:
-  #           arn: ${ssm:/consignment-asn-backend/${self:provider.stage}/cognitoUserPool.user_pool_arn}
+  handler: src/activityInsert/index.insertActivity
   layers:
     - !Ref TlogLayerLambdaLayer
   package:

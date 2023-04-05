@@ -7,8 +7,8 @@ sendMerchantJsonToSqs();
 async function sendMerchantJsonToSqs() {
   try {
     const data = require("../jsonfiles/MERCHANT_ORDER.json");
-    console.log(data)
-    // putMessagetoQueue(JSON.stringify(data));
+    // console.log(data)
+    putMessagetoQueue(JSON.stringify(data));
   } catch (error) {
     console.error(`Error: ${error.message}`);
   }
@@ -37,7 +37,7 @@ async function sendSalesJsonToSqs() {
 async function putMessagetoQueue(messageBody) {
   try {
     const sqs = new AWS.SQS();
-    let queueURL = "https://sqs.us-east-2.amazonaws.com/083868342691/testtlog";
+    let queueURL = "https://sqs.us-east-2.amazonaws.com/083868342691/my-test1-queue-dev"
 
     const params = {
       MessageBody: messageBody,

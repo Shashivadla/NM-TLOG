@@ -6,10 +6,6 @@ DynamodbActivityTable:
         AttributeType: S
       - AttributeName: sKey
         AttributeType: S
-      - AttributeName: status
-        AttributeType: S
-      - AttributeName: lastUpdateTime
-        AttributeType: S
     KeySchema:
       - AttributeName: pKey
         KeyType: HASH
@@ -24,22 +20,3 @@ DynamodbActivityTable:
     TimeToLiveSpecification:
       AttributeName: expiration
       Enabled: true
-
-
-# ActivityTable:
-#   Type: AWS::DynamoDB::Table
-#   Properties:
-#     TableName: activity-${self:provider.stage}
-#     AttributeDefinitions:
-#       - AttributeName: pKey
-#         AttributeType: S
-#       - AttributeName: sKey
-#         AttributeType: S
-#     KeySchema:
-#       - AttributeName: pKey
-#         KeyType: HASH
-#       - AttributeName: sKey
-#         KeyType: RANGE
-#     ProvisionedThroughput:
-#       ReadCapacityUnits: 1
-#       WriteCapacityUnits: 1

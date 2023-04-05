@@ -1,8 +1,3 @@
-# service:
-#   name: NM-Tlog
-#   configValidationMode: error
-
-
 service: NM-Tlog
 frameworkVersion: '3'
 
@@ -26,15 +21,20 @@ provider:
     RETURN_TABLE: !Ref ReturnTable
   iamRoleStatements: 
   - Effect: "Allow"
-    Action: 
+    Action:
       - "logs:CreateLogGroup"
       - "logs:CreateLogStream"
       - "logs:PutLogEvents"
-      - "ec2:CreateNetworkInterface"
-      - "ec2:DescribeNetworkInterfaces"
-      - "ec2:DeleteNetworkInterface"
-      - "ec2:AssignPrivateIpAddresses"
-      - "ec2:UnassignPrivateIpAddresses"
+      - sqs:ReceiveMessage
+      - sqs:CreateQueue
+      - sqs:SetQueueAttributes
+      - sqs:GetQueueAttributes
+      - sqs:GetQueueUrl
+      - sqs:ListQueues
+      - sqs:ListDeadLetterSourceQueues
+      - sqs:PurgeQueue
+      - sqs:ChangeMessageVisibility
+      - sqs:DeleteMessage 
     Resource: "*"
   - Effect: "Allow"
     Action:
@@ -47,22 +47,11 @@ provider:
     - dynamodb:DeleteItem
     - dynamodb:BatchWriteItem
     - dynamodb:BatchGetItem
-    - sqs:ReceiveMessage
-    - sqs:SendMessageBatch
-    - sqs:CreateQueue
-    - sqs:SetQueueAttributes
-    - sqs:GetQueueAttributes
-    - sqs:GetQueueUrl
-    - sqs:ListQueues
-    - sqs:ListDeadLetterSourceQueues
-    - sqs:PurgeQueue
-    - sqs:ChangeMessageVisibility
-    - sqs:DeleteMessage 
     Resource: 
       - !GetAtt MerchantOrderTable.Arn
       - !GetAtt SalesOrderTable.Arn
       - !GetAtt ShippingOrderTable.Arn
-      - !GetAtt ActivityTable.Arn
+      - !GetAtt DynamodbActivityTable.Arn
       - !GetAtt ReturnTable.Arn
 
 
@@ -78,53 +67,11 @@ custom:
 
 package:
   individually: true
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
 
-    # QueueToTriggerLambdaDLQ: ${file(config/queues/sourceEvents/nm.yml):NmSourceDynamoStreamDLQ}
-    # BgSourceDynamoStreamQueue: ${file(config/queues/sourceEvents/bg.yml):BgSourceDynamoStreamQueue}
-    # BgSourceDynamoStreamDLQ: ${file(config/queues/sourceEvents/bg.yml):BgSourceDynamoStreamDLQ}
-    # HcSourceDynamoStreamQueue: ${file(config/queues/sourceEvents/hc.yml):HcSourceDynamoStreamQueue}
-    # HcSourceDynamoStreamDLQ: ${file(config/queues/sourceEvents/hc.yml):HcSourceDynamoStreamDLQ}
-# you can add statements to the Lambda function's IAM Role here
-#  iam:
-#    role:
-#      statements:
-#        - Effect: "Allow"
-#          Action:
-#            - "s3:ListBucket"
-#          Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#        - Effect: "Allow"
-#          Action:
-#            - "s3:PutObject"
-#          Resource:
-#            Fn::Join:
-#              - ""
-#              - - "arn:aws:s3:::"
-#                - "Ref" : "ServerlessDeploymentBucket"
-#                - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
-# you can add packaging information here
-#package:
-#  patterns:
-#    - '!exclude-me.js'
-#    - '!exclude-me-dir/**'
-#    - include-me.js
-#    - include-me-dir/**
 
 functions:
-  InsetDb:
-    handler: handler.InsetDb
-    package:
-      patterns:
-        - '!**/*'
-        - 'handler.js'
-        - 'node_modules/**'
+  mapInsertDb: ${file(config/functions/mapInsertDb.yml):function}
+  # activityInsert: ${file(config/functions/activityInsert.yml):function}
 
 layers:
   TlogLayer:
