@@ -1,4 +1,4 @@
-dynamodbActivityTable:
+DynamodbActivityTable:
   Type: AWS::DynamoDB::Table
   Properties:
     AttributeDefinitions:
