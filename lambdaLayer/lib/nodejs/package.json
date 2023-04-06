@@ -2,6 +2,7 @@
   "dependencies": {
     "aws-sdk": "^2.1341.0",
     "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "uuid": "^9.0.0"
