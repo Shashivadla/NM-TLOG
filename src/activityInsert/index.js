@@ -3,20 +3,25 @@ const moment = require("moment-timezone");
 const AWS = require("aws-sdk");
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-async function insertActivity(data,pkey) {
+async function insertActivity(pkey, data) {
   try {
+    console.log(pkey);
+    let pKey = pkey;
     let sKey = `STAGES#${v4()}`;
-    let pKey = pkey  //`MRCHT#${Id}`;
+    console.log(sKey);
     let lastUpdateTime = getCstDate();
+    let lastUpdateTime1 = JSON.stringify(lastUpdateTime);
     let expiration = await getUnixExpiration(lastUpdateTime);
+    let expiration1 = JSON.stringify(expiration);
+    console.log(expiration);
     let params = {
       TableName: process.env.ACTIVITY_TABLE,
       Item: {
         ...data,
         pKey,
         sKey,
-        lastUpdateTime,
-        expiration,
+        lastUpdateTime1,
+        expiration1,
       },
     };
     console.log("params", params);
@@ -28,24 +33,10 @@ async function insertActivity(data,pkey) {
 }
 
 const getCstDate = (dateString = Date.now()) => {
-  // return moment(new Date(dateString)).tz("America/Chicago").format().split('-').slice(0, -1).join('-')
   return moment(new Date(dateString)).tz("America/Chicago");
 };
 
 async function getUnixExpiration(lastUpdateTime) {
-  // let fetchData = await getItemFromDynamo(process.env.CONFIG_TABLE, `LOOKUP#ADMIN`, `GLOBAL`);
-  // let skippedDays = get(fetchData, 'skippedActivityDeleteDays', 7);
-  // let anyOtherDays = get(fetchData, 'otherActivityDeleteDays', 30);
-  // const skippedDaysTimestampThreshold = moment(new Date()).subtract(skippedDays, 'days').tz("America/Chicago").format().split('-').slice(0, -1).join('-');
-  // const otherDaysTimestampThreshold = moment(new Date()).subtract(anyOtherDays, 'days').tz("America/Chicago").format().split('-').slice(0, -1).join('-');
-
-  // let timestampThreshold;
-  // if (status === 'SKIPPED') {
-  //     timestampThreshold = skippedDaysTimestampThreshold;
-  // } else {
-  //     timestampThreshold = otherDaysTimestampThreshold;
-  // }
-
   const unixExpiration = lastUpdateTime.add(7, "days");
   return unixExpiration;
 }

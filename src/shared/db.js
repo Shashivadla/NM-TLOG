@@ -1,3 +1,6 @@
+const AWS = require("aws-sdk");
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+
 async function insertdb(data, tableName) {
   let params;
   try {

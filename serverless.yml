@@ -1,9 +1,9 @@
-service: NM-Tlog
+service: NM-Tlog-Transfer
 frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs16.x
   region: ${opt:region, 'us-east-2'}
   stage: ${opt:stage, 'dev'}
   # tags: ${self:custom.tags}

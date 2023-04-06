@@ -1,13 +1,13 @@
 const AWS = require("aws-sdk");
 
-sendMerchantJsonToSqs();
+// sendMerchantJsonToSqs();
 // sendShipJsonToSqs()
 // sendSalesJsonToSqs()
+sendreturnJsonToSqs()
 
 async function sendMerchantJsonToSqs() {
   try {
     const data = require("../jsonfiles/MERCHANT_ORDER.json");
-    // console.log(data)
     putMessagetoQueue(JSON.stringify(data));
   } catch (error) {
     console.error(`Error: ${error.message}`);
@@ -27,6 +27,17 @@ async function sendShipJsonToSqs() {
 async function sendSalesJsonToSqs() {
   try {
     const data = require("../jsonfiles/SALES_ORDER.json");
+
+    putMessagetoQueue(JSON.stringify(data));
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+  }
+}
+
+
+async function sendreturnJsonToSqs() {
+  try {
+    const data = require("../jsonfiles/RETURN.json");
 
     putMessagetoQueue(JSON.stringify(data));
   } catch (error) {
