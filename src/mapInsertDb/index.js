@@ -614,24 +614,24 @@ async function salesMapping(data) {
       let mappedsalesData2 = {
         pKey: "SALES#" + get(data, "id", null),
         sKey: "PAYMENT_INTENTS_" + get(data, `payment.intents.[${i}].id`, null),
-        payment_intents_id: get(data, `payment.intents.[${i}].id`, null),
+        id: get(data, `payment.intents.[${i}].id`, null),
         // "payment_intents_clientSecret": get(data, `payment.intents[${i}].clientSecret`, null),
-        payment_intents_reference: get(
+        reference: get(
           data,
           `payment.intents[${i}].reference`,
           null
         ),
-        payment_intents_currency: get(
+        currency: get(
           data,
           `payment.intents[${i}].currency`,
           null
         ),
-        payment_intents_dateCreated: get(
+        dateCreated: get(
           data,
           `payment.intents[${i}].dateCreated`,
           null
         ),
-        payment_intents_status: get(data, `payment.intents[${i}].status`, null),
+        status: get(data, `payment.intents[${i}].status`, null),
       };
       await insertdb(mappedsalesData2, "salesOrder");
 
@@ -639,17 +639,17 @@ async function salesMapping(data) {
         let mappedsalesData3 = {
           pKey: "SALES#" + get(data, "id", null),
           sKey: `PAYMENT_INTENTS_${i + 1}_INTRUMENTS_${j + 1}`,
-          payment_intents_intruments_method: get(
+          method: get(
             data,
             `payment.intents[${i}].intruments[${j}].method`,
             null
           ),
-          payment_intents_intruments_option: get(
+          option: get(
             data,
             `payment.intents[${i}].intruments[${j}].option`,
             null
           ),
-          payment_intents_intruments_status: get(
+          status: get(
             data,
             `payment.intents[${i}].intruments[${j}].status`,
             null
@@ -666,17 +666,17 @@ async function salesMapping(data) {
             sKey: `PAYMENT_INTENTS_${i + 1}_INTRUMENTS_${j + 1}_AMOUNTS_${
               k + 1
             }`,
-            payment_intents_intruments_amounts_value: get(
+            value: get(
               data,
               `payment.intents[${i}].intruments[${j}].amounts[${k}].value`,
               null
             ),
-            payment_intents_intruments_amounts_settledValue: get(
+            settledValue: get(
               data,
               `payment.intents[${i}].intruments[${j}].amounts[${k}].settledValue`,
               null
             ),
-            payment_intents_intruments_amounts_refundedValue: get(
+            refundedValue: get(
               data,
               `payment.intents[${i}].intruments[${j}].amounts[${k}].refundedValue`,
               null
@@ -694,38 +694,38 @@ async function salesMapping(data) {
             sKey: `PAYMENT_INTENTS_${i + 1}_INTRUMENTS_${
               j + 1
             }_AUTHORIZATIONS_${k + 1}`,
-            payment_intents_intruments_authorizations_dateCreated: get(
+            dateCreated: get(
               data,
               `payment.intents[${i}].intruments[${j}].authorizations[${k}].dateCreated`,
               null
             ),
-            payment_intents_intruments_authorizations_processorTid: get(
+            processorTid: get(
               data,
               `payment.intents[${i}].intruments[${j}].authorizations[${k}].processorTid`,
               null
             ),
-            payment_intents_intruments_authorizations_tld: get(
+            tld: get(
               data,
               `payment.intents[${i}].intruments[${j}].authorizations[${k}].tld`,
               null
             ),
-            payment_intents_intruments_authorizations_status: get(
+            status: get(
               data,
               `payment.intents[${i}].intruments[${j}].authorizations[${k}].status`,
               null
             ),
-            payment_intents_intruments_authorizations_processor_name: get(
+            processor_name: get(
               data,
               `payment.intents[${i}].intruments[${j}].authorizations[${k}].processor.name`,
               null
             ),
-            payment_intents_intruments_authorizations_processor_accountName:
+            processor_accountName:
               get(
                 data,
                 `payment.intents[${i}].intruments[${j}].authorizations[${k}].processor.accountName`,
                 null
               ),
-            payment_intents_intruments_authorizations_processor_merchantAccount:
+            processor_merchantAccount:
               get(
                 data,
                 `payment.intents[${i}].intruments[${j}].authorizations[${k}].processor.merchantAccount`,
@@ -739,27 +739,27 @@ async function salesMapping(data) {
         let mappedsalesData6 = {
           pKey: "SALES#" + get(data, "id", null),
           sKey: `PAYMENT_INTENTS_${i + 1}_AMOUNTS_${j + 1}`,
-          payment_intents_amounts_total: get(
+          total: get(
             data,
             `payment.intents[${i}].amounts[${j}].total`,
             null
           ),
-          payment_intents_amounts_items: get(
+          items: get(
             data,
             `payment.intents[${i}].amounts[${j}].items`,
             null
           ),
-          payment_intents_amounts_shipping: get(
+          shipping: get(
             data,
             `payment.intents[${i}].amounts[${j}].shipping`,
             null
           ),
-          payment_intents_amounts_paid: get(
+          paid: get(
             data,
             `payment.intents[${i}].amounts[${j}].paid`,
             null
           ),
-          payment_intents_amounts_remaining: get(
+          remaining: get(
             data,
             `payment.intents[${i}].amounts[${j}].remaining`,
             null
@@ -773,72 +773,72 @@ async function salesMapping(data) {
       let mappedsalesData7 = {
         pKey: "SALES#" + get(data, "id", null),
         sKey: `ITEMS_` + get(data, `items[${i}].id`, null),
-        items_id: get(data, `items[${i}].id`, null),
-        items_merchantId: get(data, `items[${i}].merchantId`, null),
-        items_marchantOrderId: get(data, `items[${i}].marchantOrderId`, null),
-        items_shippingOrderId: get(data, `items[${i}].shippingOrderId`, null),
-        items_price_priceExclTaxes: get(
+        id: get(data, `items[${i}].id`, null),
+        merchantId: get(data, `items[${i}].merchantId`, null),
+        marchantOrderId: get(data, `items[${i}].marchantOrderId`, null),
+        shippingOrderId: get(data, `items[${i}].shippingOrderId`, null),
+        price_priceExclTaxes: get(
           data,
           `items[${i}].price.priceExclTaxes`,
           null
         ),
-        items_price_priceInclTaxes: get(
+        price_priceInclTaxes: get(
           data,
           `items[${i}].price.priceInclTaxes`,
           null
         ),
-        items_price_discountExclTaxes: get(
+        price_discountExclTaxes: get(
           data,
           `items[${i}].price.discountExclTaxes`,
           null
         ),
-        items_price_discountInclTaxes: get(
+        price_discountInclTaxes: get(
           data,
           `items[${i}].price.discountInclTaxes`,
           null
         ),
-        items_price_discountRate: get(
+        price_discountRate: get(
           data,
           `items[${i}].price.discountRate`,
           null
         ),
-        items_price_taxesRate: get(data, `items[${i}].price.taxesRate`, null),
-        items_price_taxesValue: get(data, `items[${i}].price.taxesValue`, null),
-        items_price_tags: get(data, `items[${i}].price.tags`, null),
-        items_price_priceWithoutPromotion: get(
+        price_taxesRate: get(data, `items[${i}].price.taxesRate`, null),
+        price_taxesValue: get(data, `items[${i}].price.taxesValue`, null),
+        price_tags: get(data, `items[${i}].price.tags`, null),
+        price_priceWithoutPromotion: get(
           data,
           `items[${i}].price.priceWithoutPromotion`,
           null
         ),
-        items_productSummary_productId: get(
+        productSummary_productId: get(
           data,
           `items[${i}].productSummary.productId`,
           null
         ),
-        items_productSummary_description: get(
+        productSummary_description: get(
           data,
           `items[${i}].productSummary.description`,
           null
         ),
-        items_customAttributes: get(data, `items[${i}].customAttributes`, null),
-        items_productSummary_shortDescription: get(
+        customAttributes: get(data, `items[${i}].customAttributes`, null),
+        productSummary_shortDescription: get(
           data,
           `items[${i}].productSummary.shortDescription`,
           null
         ),
-        items_merchantOrderCode: get(
+        merchantOrderCode: get(
           data,
           `items[${i}].merchantOrderCode`,
           null
         ),
-        items_idProductOffer: get(data, `items[${i}].idProductOffer`, null),
-        items_tags: get(data, `items[${i}].tags`, null),
-        items_selectedSaleIntent: get(
+        idProductOffer: get(data, `items[${i}].idProductOffer`, null),
+        tags: get(data, `items[${i}].tags`, null),
+        selectedSaleIntent: get(
           data,
           `items[${i}].selectedSaleIntent`,
           null
         ),
-        items_uuid: get(data, `items[${i}].uuid`, null),
+        uuid: get(data, `items[${i}].uuid`, null),
       };
       await insertdb(mappedsalesData7, "salesOrder");
       for (j = 0; j < data.items[i].promotionOffer.length; j++) {
@@ -850,7 +850,7 @@ async function salesMapping(data) {
           let mappedsalesData8 = {
             pKey: "SALES#" + get(data, "id", null),
             sKey: `ITEMS_${i + 1}_PROMOTIONOFFERS_${j + 1}_VALUEOFFERS`,
-            items_promotionOffer_valueOffers_discount: get(
+            discount: get(
               data,
               `items[${i}].promotionOffer[${j}].valueOffers[${k}].discount`,
               null
@@ -865,7 +865,7 @@ async function salesMapping(data) {
       let mappedsalesData9 = {
         pKey: "SALES#" + get(data, "id", null),
         sKey: `PROMOTIONOFFERS_${i + 1}`,
-        promotionOffers_merchantOrderCode: get(
+        merchantOrderCode: get(
           data,
           `promotionOffers[${i}].merchantOrderCode`,
           null
@@ -876,7 +876,7 @@ async function salesMapping(data) {
         let mappedsalesData10 = {
           pKey: "SALES#" + get(data, "id", null),
           sKey: `PROMOTIONOFFERS_${i + 1}_SHIPPINGOFFERS__${j + 1}`,
-          promotionOffers_shippingOffers_discount: get(
+          discount: get(
             data,
             `promotionOffers[${i}].shippingOffers[${j}].discount`,
             null
