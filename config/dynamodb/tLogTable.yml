@@ -1,7 +1,7 @@
-MerchantOrderTable:
+TLogTable:
   Type: AWS::DynamoDB::Table
   Properties:
-    TableName: merchantOrder-${self:provider.stage}
+    TableName: nm-t-log-${self:provider.stage}
     AttributeDefinitions:
       - AttributeName: pKey
         AttributeType: S
@@ -15,5 +15,3 @@ MerchantOrderTable:
     ProvisionedThroughput:
       ReadCapacityUnits: 1
       WriteCapacityUnits: 1
-    StreamSpecification:
-      StreamViewType: NEW_AND_OLD_IMAGES

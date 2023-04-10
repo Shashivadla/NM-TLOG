@@ -1,25 +1,9 @@
 function:
   handler: src/mapInsertDb/index.handler
-  # events:
-  #   - http:
-  #       path: tlog/insert
-  #       method: POST
-  #       cors:
-  #         origin: https://hybcsn-${self:provider.stage}.nmgcloud.io
-  #         headers:
-  #           - Access-Control-Allow-Origin
-  #           - X-Request-Id
-  #           - Access-Control-Allow-Headers
-  #           - Authorization
-  #           - Content-Type
-  #           - X-Amz-Date
-  #           - X-Amz-Security-Token
-  #           - X-Amz-User-Agent
-  #           - X-Customer-Id
-  #           - X-Api-Key
-  #         allowCredentials: true
-  #       authorizer:
-  #           arn: ${ssm:/consignment-asn-backend/${self:provider.stage}/cognitoUserPool.user_pool_arn}
+  events:
+    - sqs:
+        arn: !GetAtt QueueToTriggerLambda.Arn
+        batchSize: 1
   layers:
     - !Ref TlogLayerLambdaLayer
   package:
@@ -27,4 +11,6 @@ function:
     patterns:
       - "!**/*"
       - "src/mapInsertDb/*.js"
+      - "src/activityInsert/*.js"
       - "src/shared/**"
+      - "config/queues/snsToDynamo"
