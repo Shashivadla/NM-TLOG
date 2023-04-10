@@ -54,26 +54,26 @@ async function shippingMapping(data) {
       let mapl1 = {
         pKey: "SHIP#" + get(data, "id", null),
         sKey: `ADDRESSES_${i + 1}`,
-        addresses_type: get(addresses[i], `type`, null),
-        addresses_address1: get(addresses[i], `address1`, null),
-        addresses_address2: get(addresses[i], `address2`, null),
-        addresses_complement: get(addresses[i], `complement`, null),
-        addresses_city_name: get(addresses[i], `city.name`, null),
-        addresses_state_name: get(addresses[i], `state.name`, null),
-        addresses_country_name: get(addresses[i], `country.name`, null),
-        addresses_country_alpha2Code: get(
+        type: get(addresses[i], `type`, null),
+        address1: get(addresses[i], `address1`, null),
+        address2: get(addresses[i], `address2`, null),
+        complement: get(addresses[i], `complement`, null),
+        city_name: get(addresses[i], `city.name`, null),
+        state_name: get(addresses[i], `state.name`, null),
+        country_name: get(addresses[i], `country.name`, null),
+        country_alpha2Code: get(
           addresses[i],
           `country.alpha2Code`,
           null
         ),
-        addresses_district: get(addresses[i], `district`, null),
-        addresses_phone_number: get(addresses[i], `phone.number`, null),
-        addresses_phone_directDistanceDialingCode: get(
+        district: get(addresses[i], `district`, null),
+        phone_number: get(addresses[i], `phone.number`, null),
+        phone_directDistanceDialingCode: get(
           addresses[i],
           `phone.directDistanceDialingCode`,
           null
         ),
-        addresses_zipCode: get(addresses[i], `zipCode`, null),
+        zipCode: get(addresses[i], `zipCode`, null),
       };
       console.log("mapl1");
       console.log(mapl1);
@@ -85,25 +85,25 @@ async function shippingMapping(data) {
       let mapl2 = {
         pKey: "SHIP#" + get(data, "id", null),
         sKey: `TOTALVALUES_${i + 1}`,
-        totalValues_type: get(totalValues[i], `type`, null),
-        totalValues_value_currencyCode: get(
+        type: get(totalValues[i], `type`, null),
+        value_currencyCode: get(
           totalValues[i],
           `value.currencyCode`,
           null
         ),
-        totalValues_value_amount: Number(
+        value_amount: Number(
           get(totalValues[i], `value.amount`, null)
         ),
-        totalValues_taxes_type: get(totalValues[i], `taxes.type`, null),
-        totalValues_taxes_value_currencyCode: get(
+        taxes_type: get(totalValues[i], `taxes.type`, null),
+        taxes_value_currencyCode: get(
           totalValues[i],
           `taxes.value.currencyCode`,
           null
         ),
-        totalValues_taxes_value_amount: Number(
+        taxes_value_amount: Number(
           get(totalValues[i], `taxes.value.amount`, null)
         ),
-        totalValues_discountPromoCodeValue: Number(
+        discountPromoCodeValue: Number(
           get(totalValues[i], `discountPromoCodeValue`, null)
         ),
       };
@@ -117,60 +117,60 @@ async function shippingMapping(data) {
       let mapl3 = {
         pKey: "SHIP#" + get(data, "id", null),
         sKey: `LINES_${get(data, `lines[${i}].id`, null)}`,
-        lines_id: get(lines[i], `id`, null),
-        lines_references_lineNumber: Number(
+        id: get(lines[i], `id`, null),
+        references_lineNumber: Number(
           get(lines[i], `references.lineNumber`, null)
         ),
-        lines_orderCode: get(lines[i], `orderCode`, null),
-        lines_stockPoint_code: Number(get(lines[i], `stockPoint.code`, null)),
-        lines_productSummary_productNumber: Number(
+        orderCode: get(lines[i], `orderCode`, null),
+        stockPoint_code: Number(get(lines[i], `stockPoint.code`, null)),
+        productSummary_productNumber: Number(
           get(lines[i], `productSummary.productNumber`, null)
         ),
-        lines_productSummary_productType: get(
+        productSummary_productType: get(
           lines[i],
           `productSummary.productType`,
           null
         ),
-        lines_productSummary_harmonizedSystem_code: get(
+        productSummary_harmonizedSystem_code: get(
           lines[i],
           `productSummary.harmonizedSystem.code`,
           null
         ),
-        lines_productSummary_harmonizedSystem_country_name: get(
+        productSummary_harmonizedSystem_country_name: get(
           lines[i],
           `productSummary.harmonizedSystem.country.name`,
           null
         ),
-        lines_productSummary_harmonizedSystem_country_alpha2Code: get(
+        productSummary_harmonizedSystem_country_alpha2Code: get(
           lines[i],
           `productSummary.harmonizedSystem.country.alpha2Code`,
           null
         ),
-        lines_productSummary_shortDescription: get(
+        productSummary_shortDescription: get(
           lines[i],
           `productSummary.shortDescription`,
           null
         ),
-        lines_productSummary_variant_id: get(
+        productSummary_variant_id: get(
           lines[i],
           `productSummary.variant.id`,
           null
         ),
-        lines_productSummary_shippingConstraints_isCitesDocumentRequired: get(
+        productSummary_shippingConstraints_isCitesDocumentRequired: get(
           lines[i],
           `productSummary.shippingConstraints.isCitesDocumentRequired`,
           null
         ),
-        lines_productSummary_shippingConstraints_isDangerousProduct: get(
+        productSummary_shippingConstraints_isDangerousProduct: get(
           lines[i],
           `productSummary.shippingConstraints.isDangerousProduct`,
           null
         ),
-        lines_priceId: get(lines[i], `priceId`, null),
-        lines_cancellation_type: get(lines[i], `cancellation.type`, null),
-        lines_gift_from: get(lines[i], `gift.from`, null),
-        lines_gift_to: get(lines[i], `gift.to`, null),
-        lines_gift_message: get(lines[i], `gift.message`, null),
+        priceId: get(lines[i], `priceId`, null),
+        cancellation_type: get(lines[i], `cancellation.type`, null),
+        gift_from: get(lines[i], `gift.from`, null),
+        gift_to: get(lines[i], `gift.to`, null),
+        gift_message: get(lines[i], `gift.message`, null),
       };
 
       let barcodes = get(lines[i], `productSummary.variant.barcodes`, []);
@@ -182,12 +182,12 @@ async function shippingMapping(data) {
             `lines[${i}].id`,
             null
           )}_PRODUCTSUMMARY_VARIANT_BARCODES_${j + 1}`,
-          lines_productSummary_variant_barcodes_type: get(
+          type: get(
             barcodes[j],
             `type`,
             null
           ),
-          lines_productSummary_variant_barcodes_barcode: get(
+          barcode: get(
             barcodes[j],
             `barcode`,
             null
@@ -205,16 +205,16 @@ async function shippingMapping(data) {
           sKey: `LINES_${get(data, `lines[${i}].id`, null)}_TOTALVALUES_${
             j + 1
           }`,
-          lines_totalValues_type: get(totalValues[j], `type`, null),
-          lines_totalValues_value_currencyCode: get(
+          type: get(totalValues[j], `type`, null),
+          value_currencyCode: get(
             totalValues[j],
             `value.currencyCode`,
             null
           ),
-          lines_totalValues_value_amount: Number(
+          value_amount: Number(
             get(totalValues[j], `value.amount`, null)
           ),
-          lines_totalValues_discountPromoCodeValue: Number(
+          discountPromoCodeValue: Number(
             get(totalValues[j], `discountPromoCodeValue`, null)
           ),
         };
@@ -226,13 +226,13 @@ async function shippingMapping(data) {
             sKey: `LINES_${get(data, `lines[${i}].id`, null)}_TOTALVAlUES_${
               j + 1
             }_TAXES_${k + 1}`,
-            lines_totalValues_taxes_type: get(taxes[k], `type`, null),
-            lines_totalValues_taxes_value_currencyCode: get(
+            type: get(taxes[k], `type`, null),
+            value_currencyCode: get(
               taxes[k],
               `value.currencyCode`,
               null
             ),
-            lines_totalValues_taxes_value_amount: Number(
+            value_amount: Number(
               get(taxes[k], `value.amount`, null)
             ),
           };
@@ -254,8 +254,10 @@ async function shippingMapping(data) {
       let mapl7 = {
         pKey: "SHIP#" + get(data, "id", null),
         sKey: `PACKAGES_${get(data, `packages[${i}].id`, null)}`,
-        packages_id: get(packages[i], `id`, null),
-        packages_status: get(packages[i], `status`, null),
+        
+        id: get(packages[i], `id`, null),
+        
+        status: get(packages[i], `status`, null),
       };
 
       let boxes = get(packages[i], `boxes`, []);
@@ -265,7 +267,7 @@ async function shippingMapping(data) {
           sKey: `PACKAGES_${get(data, `packages[${i}].id`, null)}_BOXES_${
             j + 1
           }`,
-          packages_boxes_boxCode: Number(get(boxes[j], `boxCode`, null)),
+          boxCode: Number(get(boxes[j], `boxCode`, null)),
         };
 
         let lines = get(boxes[j], `lines`);
@@ -279,7 +281,7 @@ async function shippingMapping(data) {
               `packages[${i}].boxes[${j}].lines[${k}].id`,
               null
             )}`,
-            packages_boxes_lines_id: get(lines[k], `id`, null),
+            id: get(lines[k], `id`, null),
           };
           console.log("mapl9");
           console.log(mapl8);
@@ -299,7 +301,7 @@ async function shippingMapping(data) {
       let mapl10 = {
         pKey: "SHIP#" + get(data, "id", null),
         sKey: `AVAILABLEACTIONS_${i + 1}`,
-        availableActions_action: get(availableActions[i], `action`, null),
+        action: get(availableActions[i], `action`, null),
       };
       console.log("mapl10");
       console.log(mapl10);
@@ -311,8 +313,8 @@ async function shippingMapping(data) {
       let mapl11 = {
         pKey: "SHIP#" + get(data, "id", null),
         sKey: `EXECUTEDACTIONS_${i + 1}`,
-        executedActions_action: get(executedActions[i], `action`, null),
-        executedActions_executedDate: get(
+        action: get(executedActions[i], `action`, null),
+        executedDate: get(
           executedActions[i],
           `executedDate`,
           null

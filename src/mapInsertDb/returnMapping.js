@@ -136,28 +136,28 @@ async function returnMapping(data) {
       let mapl1 = {
         pKey: `RETURN#${get(data, "id", null)}`,
         sKey: `items_${get(data, `items[${i}].id`, null)}`,
-        items_id: Number(get(items[i], `id`, null)),
-        items_merchantOrderId: get(items[i], `merchantOrderId`, null),
-        items_merchantOrderItemId: Number(
+        id: Number(get(items[i], `id`, null)),
+        merchantOrderId: get(items[i], `merchantOrderId`, null),
+        merchantOrderItemId: Number(
           get(items[i], `merchantOrderItemId`, null)
         ),
-        items_shippingOrderId: get(items[i], `shippingOrderId`, null),
-        items_lineUniqueIdentifier: get(items[i], `lineUniqueIdentifier`, null),
-        items_orderId: get(items[i], `orderId`, null),
+        shippingOrderId: get(items[i], `shippingOrderId`, null),
+        lineUniqueIdentifier: get(items[i], `lineUniqueIdentifier`, null),
+        orderId: get(items[i], `orderId`, null),
         items_itemStatus_description: get(
           items[i],
           `itemStatus.description`,
           null
         ),
-        items_itemStatus_code: get(items[i], `itemStatus.code`, null),
-        items_returnReason_code: get(items[i], `returnReason.code`, null),
-        items_returnReason_description: get(
+        itemStatus_code: get(items[i], `itemStatus.code`, null),
+        returnReason_code: get(items[i], `returnReason.code`, null),
+        returnReason_description: get(
           items[i],
           `returnReason.description`,
           null
         ),
-        items_observations: get(items[i], `observations`, null),
-        items_exchangeId: get(items[i], `exchangeId`, null),
+        observations: get(items[i], `observations`, null),
+        exchangeId: get(items[i], `exchangeId`, null),
       };
 
       let actions = get(items[i], "actions", []);
@@ -165,11 +165,11 @@ async function returnMapping(data) {
         let mapl2 = {
           pKey: `RETURN#${get(data, "id", null)}`,
           sKey: `items_${get(data, `items[${i}].id`, null)}_actions_${j + 1}`,
-          items_actions_type: get(actions[j], `type`, null),
-          items_actions_data: get(actions[j], `date`, null),
-          items_actions_origin_type: get(actions[j], `origin.type`, null),
-          items_actions_origin_userId: get(actions[j], `origin.userId`, null),
-          items_actions_origin_tenantId: Number(
+          type: get(actions[j], `type`, null),
+          data: get(actions[j], `date`, null),
+          origin_type: get(actions[j], `origin.type`, null),
+          origin_userId: get(actions[j], `origin.userId`, null),
+          origin_tenantId: Number(
             get(actions[j], `origin.tenantId`, null)
           ),
         };
@@ -183,10 +183,10 @@ async function returnMapping(data) {
       let mapl3 = {
         pKey: `RETURN#${get(data, "id", null)}`,
         sKey: `overrides_${get(data, `overrides[${i}].overrideTypeId`, null)}`,
-        overrides_overrideTypeId: Number(
+        overrideTypeId: Number(
           get(overrides[i], `overrideTypeId`, null)
         ),
-        overrides_observations: get(overrides[i], `observations`, null),
+        observations: get(overrides[i], `observations`, null),
       };
       await insertdb(mapl3, process.env.RETURN_TABLE);
     }
