@@ -25,8 +25,8 @@ async function merchantMapping(data) {
       let map_l1 = {
         pKey: "MRCHT#" + get(data, "id", null),
         sKey: `VALUES_TAXES_${i + 1}`,
-        values_taxes_type: get(taxes[i], `type`, null),
-        values_taxes_values: Number(get(taxes[i], `values`, null)),
+        type: get(taxes[i], `type`, null),
+        values: Number(get(taxes[i], `values`, null)),
       };
       console.log("map_l1 data", map_l1);
       await insertdb(map_l1, process.env.MERCHANT_TABLE);
@@ -38,8 +38,8 @@ async function merchantMapping(data) {
       let map_l2 = {
         pKey: "MRCHT#" + get(data, "id", null),
         sKey: `PROMOCODES_${code}`,
-        promocodes_code: get(promocodes[i], `code`, null),
-        promocodes_type: get(promocodes[i], `type`, null),
+        code: get(promocodes[i], `code`, null),
+        type: get(promocodes[i], `type`, null),
       };
       console.log("map_l2 data", map_l2);
       await insertdb(map_l2, process.env.MERCHANT_TABLE);
@@ -50,7 +50,7 @@ async function merchantMapping(data) {
       let map_l3 = {
         pKey: "MRCHT#" + get(data, "id", null),
         sKey: `PROMOTIONOFFERS_SHIPPINGOFFERS_${i + 1}`,
-        promotionOffers_shippingOffers_discount: Number(
+        discount: Number(
           get(shippingOffers[i], `discount`, null)
         ),
       };
@@ -64,18 +64,18 @@ async function merchantMapping(data) {
       let map_l4 = {
         pKey: "MRCHT#" + get(data, "id", null),
         sKey: `LINES_${linesid}`,
-        lines_id: get(lines[i], `id`, null),
-        lines_merchantBarcode: get(lines[i], `merchantBarcode`, null),
-        lines_values_currencyCode: get(lines[i], `values.currencyCode`, null),
-        lines_values_quantity: Number(get(lines[i], `values.quantity`, null)),
-        lines_values_total: get(lines[i], `values.total`, null),
-        lines_shippingOrderLineId: get(
+        id: get(lines[i], `id`, null),
+        merchantBarcode: get(lines[i], `merchantBarcode`, null),
+        currencyCode: get(lines[i], `values.currencyCode`, null),
+        quantity: Number(get(lines[i], `values.quantity`, null)),
+        total: get(lines[i], `values.total`, null),
+        shippingOrderLineId: get(
           data,
           `lines[${i}].shippingOrderLineId`,
           null
         ),
-        lines_productNumber: get(data, `lines[${i}].productNumber`, null),
-        lines_productDescription: get(
+        productNumber: get(data, `lines[${i}].productNumber`, null),
+        productDescription: get(
           data,
           `lines[${i}].productDescription`,
           null
@@ -88,9 +88,9 @@ async function merchantMapping(data) {
         let map_l5 = {
           pKey: "MRCHT#" + get(data, "id", null),
           sKey: `LINES_${linesid}_TAXES_${j + 1}`,
-          lines_values_taxes_type: get(taxes[j], `type`, null),
-          lines_values_taxes_value: get(taxes[j], `value`, null),
-          lines_values_taxes_rate: get(taxes[j], `rate`, null),
+          type: get(taxes[j], `type`, null),
+          value: get(taxes[j], `value`, null),
+          rate: get(taxes[j], `rate`, null),
         };
         console.log("map_l5 data", map_l5);
         await insertdb(map_l5, process.env.MERCHANT_TABLE);

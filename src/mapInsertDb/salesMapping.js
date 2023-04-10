@@ -9,7 +9,7 @@ async function salesMapping(data) {
       pKey: "SALES#" + get(data, "id", null),
       sKey: "SALES",
       id: get(data, "id", null),
-      customer_id: Number(get(data, "customer.id", null)),
+      customer_id: get(data, "customer.id", null),
       customer_email: get(data, "customer.email", null),
       payment_billingAddress_lastName: get(
         data,
@@ -122,8 +122,10 @@ async function salesMapping(data) {
       ),
       shippingAddress_vatNumber: get(data, "shippingAddress.vatNumber", null),
       shippingAddress_city_name: get(data, "shippingAddress.city.name", null),
-      shippingAddress_city_stateId: Number(
-        get(data, "shippingAddress.city.stateId", null)
+      shippingAddress_city_stateId: get(
+        data,
+        "shippingAddress.city.stateId",
+        null
       ),
       shippingAddress_state_code: get(data, "shippingAddress.state.code", null),
       shippingAddress_state_name: get(data, "shippingAddress.state.name", null),
@@ -175,7 +177,7 @@ async function salesMapping(data) {
       ),
       createdDate: get(data, "createdDate", null),
       updatedDate: get(data, "updatedDate", null),
-      totalQuantity: Number(get(data, "totalQuantity", null)),
+      totalQuantity: get(data, "totalQuantity", null),
       subTotalAmount: get(data, "subTotalAmount", null),
       totalDiscount: get(data, "totalDiscount", null),
       totalShippingFee: get(data, "totalShippingFee", null),
@@ -185,230 +187,284 @@ async function salesMapping(data) {
       totalDomesticTaxes: get(data, "totalDomesticTaxes", null),
       tags: get(data, "tags", null),
     };
-    await insertdb(mappedsalesData1, process.env.SALES_TABLE);
+    await insertdb(mappedsalesData1, "salesOrder");
 
-    let intents = get(data, "payment.intents", []);
-    for (i = 0; i < intents.length; i++) {
+    for (i = 0; i < data.payment.intents.length; i++) {
       let mappedsalesData2 = {
         pKey: "SALES#" + get(data, "id", null),
         sKey: "PAYMENT_INTENTS_" + get(data, `payment.intents.[${i}].id`, null),
-        payment_intents_id: get(data, `pid`, null),
+        id: get(data, `payment.intents.[${i}].id`, null),
         // "payment_intents_clientSecret": get(data, `payment.intents[${i}].clientSecret`, null),
-        payment_intents_reference: get(intents[i], `reference`, null),
-        payment_intents_currency: get(intents[i], `currency`, null),
-        payment_intents_dateCreated: get(intents[i], `dateCreated`, null),
-        payment_intents_status: get(intents[i], `status`, null),
+        reference: get(
+          data,
+          `payment.intents[${i}].reference`,
+          null
+        ),
+        currency: get(
+          data,
+          `payment.intents[${i}].currency`,
+          null
+        ),
+        dateCreated: get(
+          data,
+          `payment.intents[${i}].dateCreated`,
+          null
+        ),
+        status: get(data, `payment.intents[${i}].status`, null),
       };
-      await insertdb(mappedsalesData2, process.env.SALES_TABLE);
+      await insertdb(mappedsalesData2, "salesOrder");
 
-      let intruments = get(intents[i], "intruments", []);
-      for (j = 0; j < intruments.length; j++) {
+      for (j = 0; j < data.payment.intents[i].intruments.length; j++) {
         let mappedsalesData3 = {
           pKey: "SALES#" + get(data, "id", null),
           sKey: `PAYMENT_INTENTS_${i + 1}_INTRUMENTS_${j + 1}`,
-          payment_intents_intruments_method: get(intruments[j], `method`, null),
-          payment_intents_intruments_option: get(intruments[j], `option`, null),
-          payment_intents_intruments_status: get(intruments[j], `status`, null),
+          method: get(
+            data,
+            `payment.intents[${i}].intruments[${j}].method`,
+            null
+          ),
+          option: get(
+            data,
+            `payment.intents[${i}].intruments[${j}].option`,
+            null
+          ),
+          status: get(
+            data,
+            `payment.intents[${i}].intruments[${j}].status`,
+            null
+          ),
         };
-        await insertdb(mappedsalesData3, process.env.SALES_TABLE);
-
-        let amounts = get(intruments[j], "amounts", []);
-        for (k = 0; k < amounts.length; k++) {
+        await insertdb(mappedsalesData3, "salesOrder");
+        for (
+          k = 0;
+          k < data.payment.intents[i].intruments[j].amounts.length;
+          k++
+        ) {
           let mappedsalesData4 = {
             pKey: "SALES#" + get(data, "id", null),
             sKey: `PAYMENT_INTENTS_${i + 1}_INTRUMENTS_${j + 1}_AMOUNTS_${
               k + 1
             }`,
-            payment_intents_intruments_amounts_value: get(
-              amounts[k],
-              `value`,
+            value: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].amounts[${k}].value`,
               null
             ),
-            payment_intents_intruments_amounts_settledValue: get(
-              amounts[k],
-              `settledValue`,
+            settledValue: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].amounts[${k}].settledValue`,
               null
             ),
-            payment_intents_intruments_amounts_refundedValue: get(
-              amounts[k],
-              `refundedValue`,
+            refundedValue: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].amounts[${k}].refundedValue`,
               null
             ),
           };
-          await insertdb(mappedsalesData4, process.env.SALES_TABLE);
+          await insertdb(mappedsalesData4, "salesOrder");
         }
-
-        let authorizations = get(intruments[j], "authorizations", []);
-        for (k = 0; k < authorizations.length; k++) {
+        for (
+          k = 0;
+          k < data.payment.intents[i].intruments[j].authorizations.length;
+          k++
+        ) {
           let mappedsalesData5 = {
             pKey: "SALES#" + get(data, "id", null),
             sKey: `PAYMENT_INTENTS_${i + 1}_INTRUMENTS_${
               j + 1
             }_AUTHORIZATIONS_${k + 1}`,
-            payment_intents_intruments_authorizations_dateCreated: get(
-              authorizations[k],
-              `dateCreated`,
+            dateCreated: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].authorizations[${k}].dateCreated`,
               null
             ),
-            payment_intents_intruments_authorizations_processorTid: get(
-              authorizations[k],
-              `processorTid`,
+            processorTid: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].authorizations[${k}].processorTid`,
               null
             ),
-            payment_intents_intruments_authorizations_tld: get(
-              authorizations[k],
-              `tld`,
+            tld: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].authorizations[${k}].tld`,
               null
             ),
-            payment_intents_intruments_authorizations_status: get(
-              authorizations[k],
-              `status`,
+            status: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].authorizations[${k}].status`,
               null
             ),
-            payment_intents_intruments_authorizations_processor_name: get(
-              authorizations[k],
-              `processor.name`,
+            processor_name: get(
+              data,
+              `payment.intents[${i}].intruments[${j}].authorizations[${k}].processor.name`,
               null
             ),
-            payment_intents_intruments_authorizations_processor_accountName:
-              get(authorizations[k], `processor.accountName`, null),
-            payment_intents_intruments_authorizations_processor_merchantAccount:
-              get(authorizations[k], `processor.merchantAccount`, null),
+            processor_accountName:
+              get(
+                data,
+                `payment.intents[${i}].intruments[${j}].authorizations[${k}].processor.accountName`,
+                null
+              ),
+            processor_merchantAccount:
+              get(
+                data,
+                `payment.intents[${i}].intruments[${j}].authorizations[${k}].processor.merchantAccount`,
+                null
+              ),
           };
-          await insertdb(mappedsalesData5, process.env.SALES_TABLE);
+          await insertdb(mappedsalesData5, "salesOrder");
         }
       }
-
-      let amounts = get(intents[i], "amounts", []);
-      for (j = 0; j < amounts.length; j++) {
+      for (j = 0; j < data.payment.intents[i].amounts.length; j++) {
         let mappedsalesData6 = {
           pKey: "SALES#" + get(data, "id", null),
           sKey: `PAYMENT_INTENTS_${i + 1}_AMOUNTS_${j + 1}`,
-          payment_intents_amounts_total: get(amounts[j], `total`, null),
-          payment_intents_amounts_items: get(amounts[j], `items`, null),
-          payment_intents_amounts_shipping: get(amounts[j], `shipping`, null),
-          payment_intents_amounts_paid: get(amounts[j], `paid`, null),
-          payment_intents_amounts_remaining: get(amounts[j], `remaining`, null),
+          total: get(
+            data,
+            `payment.intents[${i}].amounts[${j}].total`,
+            null
+          ),
+          items: get(
+            data,
+            `payment.intents[${i}].amounts[${j}].items`,
+            null
+          ),
+          shipping: get(
+            data,
+            `payment.intents[${i}].amounts[${j}].shipping`,
+            null
+          ),
+          paid: get(
+            data,
+            `payment.intents[${i}].amounts[${j}].paid`,
+            null
+          ),
+          remaining: get(
+            data,
+            `payment.intents[${i}].amounts[${j}].remaining`,
+            null
+          ),
         };
-        await insertdb(mappedsalesData6, process.env.SALES_TABLE);
+        await insertdb(mappedsalesData6, "salesOrder");
       }
     }
 
-    let items = get(data, "items", []);
-    console.log("ccccccccccccccccccccccccccc", items);
-    for (i = 0; i < items.length; i++) {
+    for (i = 0; i < data.items.length; i++) {
       let mappedsalesData7 = {
         pKey: "SALES#" + get(data, "id", null),
         sKey: `ITEMS_` + get(data, `items[${i}].id`, null),
-        items_id: get(items[i], `id`, null),
-        items_merchantId: Number(get(items[i], `merchantId`, null)),
-        items_marchantOrderId: Number(get(items[i], `marchantOrderId`, null)),
-        items_shippingOrderId: get(items[i], `shippingOrderId`, null),
-        items_price_priceExclTaxes: get(items[i], `price.priceExclTaxes`, null),
-        items_price_priceInclTaxes: get(items[i], `price.priceInclTaxes`, null),
-        items_price_discountExclTaxes: get(
-          items[i],
-          `price.discountExclTaxes`,
+        id: get(data, `items[${i}].id`, null),
+        merchantId: get(data, `items[${i}].merchantId`, null),
+        marchantOrderId: get(data, `items[${i}].marchantOrderId`, null),
+        shippingOrderId: get(data, `items[${i}].shippingOrderId`, null),
+        price_priceExclTaxes: get(
+          data,
+          `items[${i}].price.priceExclTaxes`,
           null
         ),
-        items_price_discountInclTaxes: get(
-          items[i],
-          `price.discountInclTaxes`,
+        price_priceInclTaxes: get(
+          data,
+          `items[${i}].price.priceInclTaxes`,
           null
         ),
-        items_price_discountRate: get(items[i], `price.discountRate`, null),
-        items_price_taxesRate: get(items[i], `price.taxesRate`, null),
-        items_price_taxesValue: get(items[i], `price.taxesValue`, null),
-        items_price_tags: get(items[i], `price.tags`, null),
-        items_price_priceWithoutPromotion: get(
-          items[i],
-          `price.priceWithoutPromotion`,
+        price_discountExclTaxes: get(
+          data,
+          `items[${i}].price.discountExclTaxes`,
           null
         ),
-        items_productSummary_productId: Number(
-          get(items[i], `productSummary.productId`, null)
-        ),
-        items_productSummary_description: get(
-          items[i],
-          `productSummary.description`,
+        price_discountInclTaxes: get(
+          data,
+          `items[${i}].price.discountInclTaxes`,
           null
         ),
-        items_customAttributes: get(items[i], `customAttributes`, null),
-        items_productSummary_shortDescription: get(
-          items[i],
-          `productSummary.shortDescription`,
+        price_discountRate: get(
+          data,
+          `items[${i}].price.discountRate`,
           null
         ),
-        items_merchantOrderCode: get(items[i], `merchantOrderCode`, null),
-        items_idProductOffer: get(items[i], `idProductOffer`, null),
-        items_tags: get(items[i], `tags`, null),
-        items_selectedSaleIntent: get(items[i], `selectedSaleIntent`, null),
-        items_uuid: get(items[i], `uuid`, null),
+        price_taxesRate: get(data, `items[${i}].price.taxesRate`, null),
+        price_taxesValue: get(data, `items[${i}].price.taxesValue`, null),
+        price_tags: get(data, `items[${i}].price.tags`, null),
+        price_priceWithoutPromotion: get(
+          data,
+          `items[${i}].price.priceWithoutPromotion`,
+          null
+        ),
+        productSummary_productId: get(
+          data,
+          `items[${i}].productSummary.productId`,
+          null
+        ),
+        productSummary_description: get(
+          data,
+          `items[${i}].productSummary.description`,
+          null
+        ),
+        customAttributes: get(data, `items[${i}].customAttributes`, null),
+        productSummary_shortDescription: get(
+          data,
+          `items[${i}].productSummary.shortDescription`,
+          null
+        ),
+        merchantOrderCode: get(
+          data,
+          `items[${i}].merchantOrderCode`,
+          null
+        ),
+        idProductOffer: get(data, `items[${i}].idProductOffer`, null),
+        tags: get(data, `items[${i}].tags`, null),
+        selectedSaleIntent: get(
+          data,
+          `items[${i}].selectedSaleIntent`,
+          null
+        ),
+        uuid: get(data, `items[${i}].uuid`, null),
       };
-      await insertdb(mappedsalesData7, process.env.SALES_TABLE);
-
-      let promotionOffer = get(items[i], "promotionOffer", []);
-      for (j = 0; j < promotionOffer.length; j++) {
-        let valueOffers = get(promotionOffer[j], "valueOffers", []);
-        for (k = 0; k < valueOffers.length; k++) {
+      await insertdb(mappedsalesData7, "salesOrder");
+      for (j = 0; j < data.items[i].promotionOffer.length; j++) {
+        for (
+          k = 0;
+          k < data.items[i].promotionOffer[j].valueOffers.length;
+          k++
+        ) {
           let mappedsalesData8 = {
             pKey: "SALES#" + get(data, "id", null),
             sKey: `ITEMS_${i + 1}_PROMOTIONOFFERS_${j + 1}_VALUEOFFERS`,
-            items_promotionOffer_valueOffers_discount: get(
-              valueOffers[k],
-              `discount`,
+            discount: get(
+              data,
+              `items[${i}].promotionOffer[${j}].valueOffers[${k}].discount`,
               null
             ),
           };
-          await insertdb(mappedsalesData8, process.env.SALES_TABLE);
+          await insertdb(mappedsalesData8, "salesOrder");
         }
       }
     }
 
-    let promotionOffers = get(data, "promotionOffers", []);
-    for (i = 0; i < promotionOffers.length; i++) {
+    for (i = 0; i < data.promotionOffers.length; i++) {
       let mappedsalesData9 = {
         pKey: "SALES#" + get(data, "id", null),
         sKey: `PROMOTIONOFFERS_${i + 1}`,
-        promotionOffers_merchantOrderCode: get(
-          promotionOffers[i],
-          `merchantOrderCode`,
+        merchantOrderCode: get(
+          data,
+          `promotionOffers[${i}].merchantOrderCode`,
           null
         ),
       };
-      await insertdb(mappedsalesData9, process.env.SALES_TABLE);
-
-      let shippingOffers = get(promotionOffers[i], "shippingOffers", []);
-      for (j = 0; j < shippingOffers.length; j++) {
+      await insertdb(mappedsalesData9, "salesOrder");
+      for (j = 0; j < data.promotionOffers[i].shippingOffers.length; j++) {
         let mappedsalesData10 = {
           pKey: "SALES#" + get(data, "id", null),
           sKey: `PROMOTIONOFFERS_${i + 1}_SHIPPINGOFFERS__${j + 1}`,
-          promotionOffers_shippingOffers_discount: get(
-            shippingOffers[j],
-            `discount`,
+          discount: get(
+            data,
+            `promotionOffers[${i}].shippingOffers[${j}].discount`,
             null
           ),
         };
-        await insertdb(mappedsalesData10, process.env.SALES_TABLE);
+        await insertdb(mappedsalesData10, "salesOrder");
       }
     }
-
-    let data1 = {
-      status: "SUCESS",
-      message: "Sales data inserted successfully",
-      lastUpdateId: "salesMapping",
-    };
-    let pKeyInsert = "SALES#" + get(data, "id", null);
-
-    await insertActivity(pKeyInsert, data1);
   } catch (error) {
-    let data2 = {
-      status: "ERROR",
-      message: "sales data not inserted",
-      lastUpdateId: "salesMapping",
-    };
-    let pKeyInsert = "SALES#" + get(data, "id", null);
-    await insertActivity(pKeyInsert, data2);
     console.error(`Error: ${error.message}`);
   }
 }
