@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const get = require("lodash.get");
 const set = require("lodash.set");
 
-const { getItem, queryWithPartitionKey } = require('../shared/dynamo');
+const { putItem, getItem, queryWithPartitionKey } = require('../shared/dynamo');
 const {
   generateIGTaxData,
   generateIDiscData,
@@ -14,6 +14,10 @@ const {
 
 const SALES_TABLE = process.env.SALES_TABLE;
 const SHIPPING_TABLE = process.env.SHIPPING_TABLE;
+const TRANSFER_TABLE = process.env.TRANSFER_TABLE;
+const CONFIG_TABLE = process.env.CONFIG_TABLE;
+
+
 
 module.exports.handler = async (event) => {
   console.info("Event: ", JSON.stringify(event));
@@ -57,6 +61,7 @@ async function processRecord(keys, newImage) {
       await generateIDiscData(pKey, newImage);
     } else {
       await generateTItemData(pKey, newImage);
+      await transferRecord(pKey, newImage)
     }
   }
 };
@@ -95,3 +100,51 @@ async function fetchSalesDataAndGenerateTLogData(portalOrderCode, merchantData) 
   console.log("salesData", salesData);
   
 };
+
+async function transferRecord(pKey,event) {
+  let  attributesToGet = "versionNbr, transactionTypeCode, timestamp, eventId, totalRecordCount, applicationId, applicationName, routingTypeName, labelName, labelValueText, distroNbr, distroDocType";
+
+let key = {
+  pKey: "LOOKUP#Generator",
+  sKey: "transfer"
+}
+  const configData = getItem(CONFIG_TABLE, key, attributesToGet)
+
+
+  const params = await mapTransferGeneratorRecord(pKey, event, configData);
+  await putItem(TRANSFER_TABLE, params)
+}
+
+async function mapTransferGeneratorRecord(pKey, event, configData) {
+
+    let record = {
+      pKey: pKey,
+      sKey: "ITEM#" + event.itemId,
+      versionNbr: get(configData, "versionNbr", null),
+      transactionTypeCode: get(configData, "transactionTypeCode", null),
+      timestamp: moment().utcOffset('-05:00').format('YYYYMMDDHHmmss'),
+      eventId: get(configData, "eventId", null),
+      totalRecordCount: get(configdata, "totalRecordCount", 0),
+      applicationId: get(configData, "applicationId", "CMOS"),
+      applicationName: get(configData, "applicationName", "CMOS"),
+      routingTypeName: get(configData, "routingTypeName", null),
+      labelName: get(configData, "labelName", null),
+      labelValueText: get(configData, "labelvalueText", null),
+      distroNbr: get(configData, "distrroNbr", null),
+      distroDocType: get(configData, "distroDocType", null),
+      physicalFromLoc: get(configData, "physicalFromLoc", null),
+      fromLocType: get(configData, "fromLocType", null),
+      fromLoc: get(configData, "fromLoc", null),
+      physicalToLoc: get(configData, "physicalToLoc", null),
+      toLocType: get(configData, "toLocType", null),
+      toLoc: get(configData, "toLoc", null),
+      tsfType: get(configData, "tsfType", null),
+      distroStatus: get(configData, "distroStatue", null),
+      contextType: get(configData, "contextType", null),
+      item: get(event, "itemId", null),
+      distroQty: get(event, "values.quantity", null),
+      fromDisposition: get(configData, "fromDisposition", null),
+      message_Status: "New",
+    };
+  return record;
+}
