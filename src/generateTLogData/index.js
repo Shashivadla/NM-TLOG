@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const get = require("lodash.get");
 const set = require("lodash.set");
 
-const { getItem, queryWithPartitionKey } = require('../shared/dynamo');
+const { putItem, getItem, queryWithPartitionKey } = require('../shared/dynamo');
 const {
   generateIGTaxData,
   generateIDiscData,
@@ -57,6 +57,7 @@ async function processRecord(keys, newImage) {
       await generateIDiscData(pKey, newImage);
     } else {
       await generateTItemData(pKey, newImage);
+      await transferRecord(pKey, newImage)
     }
   }
 };
@@ -95,3 +96,51 @@ async function fetchSalesDataAndGenerateTLogData(portalOrderCode, merchantData) 
   console.log("salesData", salesData);
   
 };
+
+async function transferRecord(pKey,event) {
+  let  attributesToGet = "versionNbr, transactionTypeCode, timestamp, eventId, totalRecordCount, applicationId, applicationName, routingTypeName, labelName, labelValueText, distroNbr, distroDocType";
+
+let key = {
+  pKey: "LOOKUP#Generator",
+  sKey: "transfer"
+}
+  const configData = getItem("Generator_Config", key, attributesToGet)
+
+
+  const params = await mapTransferGeneratorRecord(pKey, event, configData);
+  await putItem("Generator_Transfer", params)
+}
+
+async function mapTransferGeneratorRecord(pKey, event, configData) {
+
+    let record = {
+      pKey: pKey,
+      sKey: "ITEM#" + event.itemId,
+      versionNbr: get(configData, "versionNbr", null),
+      transactionTypeCode: get(configData, "transactionTypeCode", null),
+      timestamp: "2023-01-11T01:06:32.429-05:00",
+      eventId: get(configData, "eventId", null),
+      totalRecordCount: get(configdata, "totalRecordCount", 0),
+      applicationId: get(configData, "applicationId", "CMOS"),
+      applicationName: get(configData, "applicationName", "CMOS"),
+      routingTypeName: get(configData, "routingTypeName", null),
+      labelName: get(configData, "labelName", null),
+      labelValueText: get(configData, "labelvalueText", null),
+      distroNbr: get(configData, "distrroNbr", null),
+      distroDocType: get(configData, "distroDocType", null),
+      physicalFromLoc: get(configData, "physicalFromLoc", null),
+      fromLocType: get(configData, "fromLocType", null),
+      fromLoc: get(configData, "fromLoc", null),
+      physicalToLoc: get(configData, "physicalToLoc", null),
+      toLocType: get(configData, "toLocType", null),
+      toLoc: get(configData, "toLoc", null),
+      tsfType: get(configData, "tsfType", null),
+      distroStatus: get(configData, "distroStatue", null),
+      contextType: get(configData, "contextType", null),
+      item: event.itemId,
+      distroQty: event.values.quantity,
+      fromDisposition: get(configData, "fromDisposition", null),
+      message_Status: "New",
+    };
+  return record;
+}
