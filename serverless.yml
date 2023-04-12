@@ -20,6 +20,8 @@ provider:
     SHIPPING_TABLE: !Ref ShippingOrderTable
     RETURN_TABLE: !Ref ReturnTable
     T_Log_Table: !Ref TLogTable
+    TRANSFER_TABLE: !Ref Generator_Transfer
+    CONFIG_TABLE: "Generator_Config"
   iamRoleStatements: 
   - Effect: "Allow"
     Action:

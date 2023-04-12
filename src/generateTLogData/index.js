@@ -14,6 +14,10 @@ const {
 
 const SALES_TABLE = process.env.SALES_TABLE;
 const SHIPPING_TABLE = process.env.SHIPPING_TABLE;
+const TRANSFER_TABLE = process.env.TRANSFER_TABLE;
+const CONFIG_TABLE = process.env.CONFIG_TABLE;
+
+
 
 module.exports.handler = async (event) => {
   console.info("Event: ", JSON.stringify(event));
@@ -104,11 +108,11 @@ let key = {
   pKey: "LOOKUP#Generator",
   sKey: "transfer"
 }
-  const configData = getItem("Generator_Config", key, attributesToGet)
+  const configData = getItem(CONFIG_TABLE, key, attributesToGet)
 
 
   const params = await mapTransferGeneratorRecord(pKey, event, configData);
-  await putItem("Generator_Transfer", params)
+  await putItem(TRANSFER_TABLE, params)
 }
 
 async function mapTransferGeneratorRecord(pKey, event, configData) {
@@ -118,7 +122,7 @@ async function mapTransferGeneratorRecord(pKey, event, configData) {
       sKey: "ITEM#" + event.itemId,
       versionNbr: get(configData, "versionNbr", null),
       transactionTypeCode: get(configData, "transactionTypeCode", null),
-      timestamp: "2023-01-11T01:06:32.429-05:00",
+      timestamp: moment().utcOffset('-05:00').format('YYYYMMDDHHmmss'),
       eventId: get(configData, "eventId", null),
       totalRecordCount: get(configdata, "totalRecordCount", 0),
       applicationId: get(configData, "applicationId", "CMOS"),
@@ -137,8 +141,8 @@ async function mapTransferGeneratorRecord(pKey, event, configData) {
       tsfType: get(configData, "tsfType", null),
       distroStatus: get(configData, "distroStatue", null),
       contextType: get(configData, "contextType", null),
-      item: event.itemId,
-      distroQty: event.values.quantity,
+      item: get(event, "itemId", null),
+      distroQty: get(event, "values.quantity", null),
       fromDisposition: get(configData, "fromDisposition", null),
       message_Status: "New",
     };
